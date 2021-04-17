@@ -78,12 +78,14 @@ class Index extends React.Component {
                   {loading && <span className="store-name">Please wait...</span>}
                   {!loading && !error && <span className="store-name">{data.shop.name}</span>}
                   {error && <p>Error {JSON.stringify(error)}</p>}
-                  <a href={data.shop.myshopifyDomain} target="_blank">
-                    <span className="store-link waves-effect waves-dark">
-                      <span className="material-icons">link</span>
-                      Open Store
-                    </span>
-                  </a>
+                  {!loading && !error && 
+                    <a href={data.shop.myshopifyDomain} target="_blank">
+                      <span className="store-link waves-effect waves-dark">
+                        <span className="material-icons">link</span>
+                        Open Store
+                      </span>
+                    </a>
+                  }
                 </div>
               );
             }}
@@ -133,7 +135,7 @@ class Index extends React.Component {
               {this.state.query !== "" && <p>Showing results for {this.state.query}</p>}
 
               <div className="products-list">
-                {/* <Query query={GET_PRODUCTS} variables={{ query: "title:" + this.state.query }}>
+                <Query query={GET_PRODUCTS} variables={{ query: "title:" + this.state.query }}>
                   {({data, loading, error}) => {
                     if (loading)
                       return <p>Loading products....</p>;
@@ -151,7 +153,7 @@ class Index extends React.Component {
                     
                       return <p>Error {JSON.stringify(error)}</p>
                   }}
-                </Query> */}
+                </Query>
               </div>
 
             </div>
