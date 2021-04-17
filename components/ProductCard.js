@@ -6,12 +6,14 @@ class ProductCard extends React.Component {
           <img src={this.props.image} alt="" />
           <span className="product-title">{this.props.title}</span>
 
-          <a className="delete-button waves-effect waves-light btn-small green" target="_blank" href={this.props.productUrl}>
-            <i className="material-icons prefix">link</i> Open Product
-          </a>
-          <a className="delete-button waves-effect waves-light btn-small red">
-            <i className="material-icons prefix">delete</i> Delete Product
-          </a>
+          <div class="toolbox">
+            <a className="delete-button waves-effect waves-light btn-small green" target="_blank" href={this.props.productUrl}>
+              <i className="material-icons prefix">link</i> Open Product
+            </a>
+            <a className="delete-button waves-effect waves-light btn-small red">
+              <i className="material-icons prefix">delete</i> Delete Product
+            </a>
+          </div>
         </div>
 
         <div className="product-content">

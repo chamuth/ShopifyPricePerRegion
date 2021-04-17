@@ -132,7 +132,7 @@ class Index extends React.Component {
                 </div>
               </form>
 
-              {this.state.query !== "" && <p>Showing results for {this.state.query}</p>}
+              {this.state.query !== "" && <p>Showing results for &quot;{this.state.query}&quot;</p>}
 
               <div className="products-list">
                 <Query query={GET_PRODUCTS} variables={{ query: "title:" + this.state.query }}>
@@ -143,6 +143,7 @@ class Index extends React.Component {
                       return data.products.edges.map((edge) => {
                         return (
                           <ProductCard 
+                            id={edge.node.id}
                             title={edge.node.title}
                             image={edge.node.featuredImage.originalSrc}
                             productUrl={edge.node.onlineStoreUrl}
