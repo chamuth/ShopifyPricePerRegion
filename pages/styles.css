@@ -1,0 +1,195 @@
+.main
+{
+  display:flex;
+  height:100vh;
+}
+
+.main .sidebar
+{
+  width:400px;
+  height:100vh;
+  background-color:#122335;
+  color:white;
+  padding-top:50px;
+}
+
+.sidebar .store-details
+{
+  text-align:center;
+  font-size:2em;
+}
+
+.sidebar .store-details>.material-icons
+{
+  color:#122335;
+  background-color:white;
+  border-radius:50%;
+  font-size:2.5em;
+  padding:20px;
+  margin-bottom:10px;
+}
+
+.sidebar .store-details .store-name
+{
+  display:block;
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+.sidebar .store-details .store-link
+{
+  font-size:15px;
+  display:flex;
+  align-items:center;
+  justify-content: center;
+  background-color:#bed4e9;
+  color:#254b70;
+  margin: 10px 100px;
+  padding: 5px 10px;
+  border-radius:50px;
+  font-weight:bold;
+}
+
+.store-link .material-icons
+{
+  margin-right:10px;
+}
+
+.sidebar .menu
+{
+  display:flex;
+  flex-direction:column;
+  margin-top:50px;
+}
+
+.sidebar .menu .item
+{
+  display:flex;
+  flex-direction:row;
+  padding: 20px 30px;
+  align-items:center;
+  cursor:pointer;
+}
+
+.sidebar .menu .item.active
+{
+  background-color:#1b3752;
+}
+
+.menu .item .material-icons
+{
+  font-size: 2em;
+}
+
+.menu .item .caption
+{
+  font-size: 1.2em;
+  margin-left: 25px;
+  font-weight: bold;
+}
+
+.main .content
+{
+  flex-grow:1;
+  background-color:#dce7f3;
+  overflow-y:auto;
+}
+
+.content .container>.card 
+{
+  border-radius:10px;
+  margin:50px 0;
+  padding: 20px 25px;
+}
+
+.products-list
+{
+  margin-top:25px;
+}
+
+.products-list>*
+{
+  margin-top:15px !important;
+}
+
+.product
+{
+  padding:0 !important;
+}
+
+.product .top
+{
+  background-color:#eee;
+  padding: 15px 20px;
+  display:flex;
+  align-items: center;
+}
+
+.product .top .product-title
+{
+  flex-grow:1;
+  font-size:1.2em;
+}
+
+.product .top img
+{
+  width: 50px;
+  margin-right:20px;
+}
+
+.product .product-content 
+{
+  padding: 15px 20px;
+}
+
+.btn-small,.btn
+{
+  align-items:center;
+  display:flex;
+}
+
+.btn-small>.material-icons,.btn>.material-icons
+{
+  margin-right:5px;
+}
+
+tbody td>*
+{
+  display:block;
+  margin-top:5px;
+}
+
+tbody td input
+{
+  padding:0 !important;
+  margin:0;
+  height:25px !important;
+}
+
+.gray
+{
+  color:#888;
+}
+
+.float-right
+{
+  float:right;
+  margin-left:5px;
+}
+
+h4
+{
+  margin-top:5px;
+  display:inline-block;
+}
+
+.strikethrough
+{
+  text-decoration:line-through;
+}
+
+h4.title 
+{
+  font-weight:bold;
+  font-size:1.5em;
+}
