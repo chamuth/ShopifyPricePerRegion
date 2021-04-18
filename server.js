@@ -67,16 +67,14 @@ app.prepare().then(() => {
     ctx.body = JSON.stringify(rows);
   })
 
-  router.post("/api/rates", async (ctx) => {
+  router.post("/api/rates", (ctx) => {
     var usdeur = ctx.request.query["USDEUR"];
     var usdgbp = ctx.request.query["USDGBP"];
+    
+    ctx.body = "UPDATE exchange_rates SET value=" + usdeur + " WHERE key='USDEUR'";
 
-    await ctx.app.pool.query("UPDATE exchange_rates SET value=" + usdeur + " WHERE key = 'USDEUR'");
-    await ctx.app.pool.query("UPDATE exchange_rates SET value=" + usdgbp + " WHERE key = 'USDGBP'");
-
-    ctx.body = JSON.stringify({
-      message: "Great success!"
-    })
+    ctx.app.pool.query("UPDATE exchange_rates SET value=" + usdeur + " WHERE key='USDEUR'");
+    ctx.app.pool.query("UPDATE exchange_rates SET value=" + usdgbp + " WHERE key='USDGBP'");
   })
 
   server.use(graphQLProxy({ version: ApiVersion.July20 }));
