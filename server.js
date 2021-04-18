@@ -51,18 +51,17 @@ app.prepare().then(() => {
   router.post('/webhooks/products/create', webhook, (ctx) => {
     console.log('received webhook: ', ctx.state.webhook);
   });
-  router.get('/api/rates', (ctx, _) => {
-    getDatabase().then((db) => {
-      db.query(`SELECT * FROM exchange_rates;`).then((val) => {
-        ctx.body = JSON.stringify(val);
-      }, (reason) => {
-        ctx.body = JSON.stringify(reason);
-      }).catch(() => {
-        ctx.body("ERROR");
-      });
+  router.get('/api/rates', async (ctx, _) => {
+    var db = await getDatabase();
+    console.log("DB CONNECTED");
 
+    db.query(`SELECT * FROM exchange_rates;`).then((val) => {
+      ctx.body = JSON.stringify(val);
+    }, (reason) => {
+      ctx.body = JSON.stringify(reason);
+    }).catch(() => {
+      ctx.body = "ERROR";
     });
-
   });
 
   router.post('/api/rate', (ctx) => {
