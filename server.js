@@ -10,7 +10,8 @@ const { default: graphQLProxy } = require('@shopify/koa-shopify-graphql-proxy');
 const { ApiVersion } = require('@shopify/koa-shopify-graphql-proxy');
 const Router = require('koa-router');
 const { receiveWebhook, registerWebhook } = require('@shopify/koa-shopify-webhooks');
-const { Client } = require("pg");
+
+const { getDatabase } = require("./utils/db");
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
@@ -22,30 +23,6 @@ const {
   SHOPIFY_API_KEY,
   HOST,
 } = process.env;
-
-var pgClient = new Client(process.env.DATABASE_URL);
-pgClient.connect((err) => {
-  if (err)
-  {
-    console.log(err);
-  }
-  else 
-  {
-    console.log("Connected to database");
-
-    pgClient.query(`SELECT EXISTS (
-      SELECT FROM information_schema.tables 
-      WHERE  table_schema = 'schema_name'
-      AND    table_name   = 'table_name'
-    );`).then((val) => {
-      console.log(val);
-    }, (reason) => {
-      console.log ("Rejected")
-      console.log(reason);
-    });
-  }
-})
-
 
 app.prepare().then(() => {
   const server = new Koa();
@@ -81,6 +58,11 @@ app.prepare().then(() => {
     await handle(ctx.req, ctx.res);
     ctx.respond = false;
     ctx.res.statusCode = 200;
+  });
+
+  router.get('/api/rates', (ctx,next) => {
+    var db = getDatabase();
+    ctx.body = "RATES";
   });
 
   server.use(router.allowedMethods());
