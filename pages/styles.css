@@ -95,7 +95,7 @@
   overflow-y:auto;
 }
 
-.content .container>.card 
+.content .container-fluid>.card 
 {
   border-radius:10px;
   margin:50px 0;
@@ -203,4 +203,9 @@ h4.title
 .toolbox>*
 {
   margin-left:10px;
+}
+
+.container-fluid 
+{
+  padding: 0 40px;
 }

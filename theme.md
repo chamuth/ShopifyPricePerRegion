@@ -86,3 +86,79 @@
 </div>
 
 <!-- theme.js -->
+
+function currencyForCountry(code, code2) 
+{
+  var pounds = ["GBR"]
+  var euro = ["IRL", "DEU", "ITA", "FRA", "ESP", "PRT", "NLD", "GRC", "AUT", "BEL", "FIN"];
+  
+  if (pounds.includes(code) || pounds.includes(code2))
+    return "GBP";
+  if (euro.includes(code) || euro.includes(code2))
+    return "EUR";
+  else return "USD";
+}
+
+function currencyFormSubmit(event) {
+  event.target.form.submit();
+}
+
+document.querySelectorAll('.shopify-currency-form select').forEach(function(element) {
+  element.addEventListener('change', currencyFormSubmit);
+});
+
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  var expires = "expires="+d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+var regionModal = document.querySelector(".region-selector");
+
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+
+var geojs = JSON.parse(httpGet("https://get.geojs.io/v1/ip/country.json"));
+
+document.getElementById("region-selector-flag").setAttribute("src", `https://flagcdn.com/w320/${geojs.country.toLowerCase()}.png`);
+document.querySelector(".region-selector .content .main").innerHTML = "We are shipping to " + geojs.name;
+document.querySelector(".region-selector .content .change-region").innerHTML = "Not shipping to " + geojs.name + "?";
+
+var selectedCurrency = currencyForCountry(geojs.country, geojs.country_3);
+
+
+if (getCookie("region") == "") {
+  // show the region modal 
+  regionModal.classList.remove("hide");
+  // set region cookie
+  setCookie("region", selectedCurrency, 900)
+}
+
+document.querySelector(".region-selector .content .sub").innerHTML = "Prices are shown and changed to <strong>" + selectedCurrency + "</strong>.";
+
+function hideRegionModal() {
+ regionModal.classList.add("hide");
+}
+document.getElementById("regionContinueShoppingBtn").onclick = hideRegionModal;
+document.querySelector(".region-selector .bg").onclick = hideRegionModal

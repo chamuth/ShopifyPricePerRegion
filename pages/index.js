@@ -13,7 +13,7 @@ const GET_SHOP = gql`
 `
 const GET_PRODUCTS = gql`
   query GetProducts($query: String!) {
-    products (first: 20, query: $query) {
+    products (first: 5, query: $query) {
       edges {
         node {
           id
@@ -23,17 +23,7 @@ const GET_PRODUCTS = gql`
             originalSrc
           }
           onlineStoreUrl
-          privateMetafields (first: 5)
-          {
-            edges {
-              node {
-                namespace
-                key
-                value
-              }
-            }
-          }
-          variants (first : 10) {
+          variants (first : 5) {
             edges {
               node {
                 id
@@ -41,6 +31,9 @@ const GET_PRODUCTS = gql`
                 inventoryQuantity
                 displayName
                 price
+                pprCurrency: metafield(namespace: "ppr", key: "pprCurrency") {
+                  value
+                }
                 compareAtPrice
               }
             }
@@ -79,7 +72,7 @@ class Index extends React.Component {
                   {!loading && !error && <span className="store-name">{data.shop.name}</span>}
                   {error && <p>Error {JSON.stringify(error)}</p>}
                   {!loading && !error && 
-                    <a href={data.shop.myshopifyDomain} target="_blank">
+                    <a href={"http://" + data.shop.myshopifyDomain} target="_blank">
                       <span className="store-link waves-effect waves-dark">
                         <span className="material-icons">link</span>
                         Open Store
@@ -113,16 +106,10 @@ class Index extends React.Component {
       through the shopify API
     --> */}
         <div className="content">
-          <div className="container">
+          <div className="container-fluid">
             <div className="card">
 
               <h4 className="title">Products</h4>
-
-              <div className="float-right">
-                <a className="waves-effect waves-light btn green">
-                  <i className="material-icons prefix">save</i> Save Products
-                </a>
-              </div>
 
               <form action="" style={{marginTop:20}}>
                 <div className="input-field col s6">
