@@ -47,7 +47,7 @@ const GET_PRODUCTS = gql`
 class Index extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {query: "", tab: "products"};
+    this.state = {query: "", tab: "products", rates: {}};
 
     this.handleChange = this.handleChange.bind(this);
   }
@@ -62,9 +62,11 @@ class Index extends React.Component {
   }
 
   componentDidMount(){
-    fetch("/api/rates").then(res => {
-      alert(res);
-    });
+    fetch("/api/rates")
+      .then(res => res.json())
+      .then((result) => {
+        this.setState({ rates: result });
+      });
   }
 
   render() {
@@ -164,7 +166,7 @@ class Index extends React.Component {
 
             {this.state.tab === "rates" && 
               <div className="card">
-                <h4 className="title">Exchange Rates</h4>
+                <h4 style={{marginBottom: 20}} className="title">Exchange Rates</h4>
 
                 <table>
                   <thead>
@@ -175,15 +177,23 @@ class Index extends React.Component {
                   </thead>
                   <tbody>
                     <tr>
-                      <td>USD to EUR</td>
+                      <td>1 USD in EUR</td>
                       <td>
-                        <input type="number" step="0.01"></input>
+                        <input 
+                          type="number" 
+                          step="0.01" 
+                          defaultValue={this.state.rates.USDEUR}
+                        ></input>
                       </td>
                     </tr>
                     <tr>
-                      <td>USD to GBP</td>
+                      <td>1 USD in GBP</td>
                       <td>
-                        <input type="number" step="0.01"></input>
+                        <input 
+                          type="number" 
+                          step="0.01"
+                          defaultValue={this.state.rates.USDGBP}
+                        ></input>
                       </td>
                     </tr>
                   </tbody>
