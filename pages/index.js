@@ -50,6 +50,9 @@ class Index extends React.Component {
     this.state = {query: "", tab: "products", rates: {}};
 
     this.handleChange = this.handleChange.bind(this);
+
+    this.usdeurrate = React.createRef();
+    this.usdgbprate = React.createRef();
   }
 
   handleChange(event) {
@@ -62,6 +65,11 @@ class Index extends React.Component {
   }
 
   componentDidMount(){
+    this.refetchRates();
+  }
+
+  refetchRates()
+  {
     fetch("/api/rates")
       .then(res => res.json())
       .then((result) => {
@@ -75,6 +83,18 @@ class Index extends React.Component {
         })
 
         this.setState({ rates: rates });
+      });
+  }
+
+  submitRates()
+  {
+    const requestOptions = {
+      method: 'POST'
+    };
+    fetch("/api/rates?USDEUR=" + this.usdeurrate.current.value + "&USDGBP=" + this.usdgbprate.current.value, requestOptions)
+      .then(response => response.json())
+      .then((_) => {
+        this.refetchRates();
       });
   }
 
@@ -178,41 +198,41 @@ class Index extends React.Component {
               <div className="card">
                 <h4 style={{marginBottom: 20}} className="title">Exchange Rates</h4>
 
-                <form method="POST" action="/api/rates" encType="application/x-www-form-urlencoded">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Currency</th>
-                        <th>Exchange Rate</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>1 USD in EUR</td>
-                        <td>
-                          <input 
-                            type="number" 
-                            step="0.01" 
-                            name="USDEUR"
-                            defaultValue={this.state.rates.USDEUR}
-                          ></input>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>1 USD in GBP</td>
-                        <td>
-                          <input 
-                            type="number" 
-                            step="0.01"
-                            name="USDGBP"
-                            defaultValue={this.state.rates.USDGBP}
-                          ></input>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <button class="btn" type="submit">Update Rates</button>
-                </form>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Currency</th>
+                      <th>Exchange Rate</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1 USD in EUR</td>
+                      <td>
+                        <input 
+                          type="number" 
+                          step="0.01" 
+                          name="USDEUR"
+                          ref={this.usdeurrate}
+                          defaultValue={this.state.rates.USDEUR}
+                        ></input>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>1 USD in GBP</td>
+                      <td>
+                        <input 
+                          type="number" 
+                          step="0.01"
+                          name="USDGBP"
+                          ref={this.usdgbprate}
+                          defaultValue={this.state.rates.USDGBP}
+                        ></input>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <button class="btn" type="submit" onClick={submitRates} style={{marginTop:25}}>Update Rates</button>
               </div>
             }
           </div>
