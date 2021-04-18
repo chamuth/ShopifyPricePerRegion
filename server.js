@@ -51,7 +51,7 @@ app.prepare().then(() => {
   router.post('/webhooks/products/create', webhook, (ctx) => {
     console.log('received webhook: ', ctx.state.webhook);
   });
-  router.get('/api/rates', async (ctx, _) => {
+  router.get('/api/rates', async (ctx) => {
     var db = await getDatabase();
     console.log("DB CONNECTED");
 
