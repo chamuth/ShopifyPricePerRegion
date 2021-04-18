@@ -24,63 +24,63 @@ const {
   HOST,
 } = process.env;
 
-app.prepare().then(() => {
-  const server = new Koa();
-  const router = new Router();
-  server.use(session({ sameSite: 'none', secure: true }, server));
-  server.keys = [SHOPIFY_API_SECRET_KEY];
+getDatabase().then((db) => {  
+  app.prepare().then(() => {
+    const server = new Koa();
+    const router = new Router();
+    server.use(session({ sameSite: 'none', secure: true }, server));
+    server.keys = [SHOPIFY_API_SECRET_KEY];
 
-  server.use(
-    createShopifyAuth({
-      apiKey: SHOPIFY_API_KEY,
-      secret: SHOPIFY_API_SECRET_KEY,
-      scopes: ['read_products', 'write_products'],
-      async afterAuth(ctx) {
-        const { shop, accessToken } = ctx.session;
-        ctx.cookies.set("shopOrigin", shop, {
-          httpOnly: false,
-          secure: true,
-          sameSite: 'none'
-        });
-      }
-    })
-  );
+    server.use(
+      createShopifyAuth({
+        apiKey: SHOPIFY_API_KEY,
+        secret: SHOPIFY_API_SECRET_KEY,
+        scopes: ['read_products', 'write_products'],
+        async afterAuth(ctx) {
+          const { shop, accessToken } = ctx.session;
+          ctx.cookies.set("shopOrigin", shop, {
+            httpOnly: false,
+            secure: true,
+            sameSite: 'none'
+          });
+        }
+      })
+    );
 
-  const webhook = receiveWebhook({ secret: SHOPIFY_API_SECRET_KEY });
+    const webhook = receiveWebhook({ secret: SHOPIFY_API_SECRET_KEY });
 
-  router.post('/webhooks/products/create', webhook, (ctx) => {
-    console.log('received webhook: ', ctx.state.webhook);
-  });
-  router.get('/api/rates', async (ctx) => {
-    var db = await getDatabase();
-    console.log("DB CONNECTED");
-
-    db.query(`SELECT * FROM exchange_rates;`).then((val) => {
-      ctx.body = JSON.stringify(val);
-    }, (reason) => {
-      ctx.body = JSON.stringify(reason);
-    }).catch(() => {
-      ctx.body = "ERROR";
+    router.post('/webhooks/products/create', webhook, (ctx) => {
+      console.log('received webhook: ', ctx.state.webhook);
     });
-  });
+    router.get('/api/rates', async (ctx) => {
+      console.log("TRYING");
+      db.query(`SELECT * FROM exchange_rates;`).then((val) => {
+        ctx.body = JSON.stringify(val);
+      }, (reason) => {
+        ctx.body = JSON.stringify(reason);
+      }).catch(() => {
+        ctx.body = "ERROR";
+      });
+    });
 
-  router.post('/api/rate', (ctx) => {
-    ctx.body = JSON.stringify(ctx.params);
-  });
+    router.post('/api/rate', (ctx) => {
+      ctx.body = JSON.stringify(ctx.params);
+    });
 
-  server.use(graphQLProxy({ version: ApiVersion.July20 }));
+    server.use(graphQLProxy({ version: ApiVersion.July20 }));
 
-  router.get('(.*)', verifyRequest(), async (ctx) => {
-    await handle(ctx.req, ctx.res);
-    ctx.respond = false;
-    ctx.res.statusCode = 200;
-  });
+    router.get('(.*)', verifyRequest(), async (ctx) => {
+      await handle(ctx.req, ctx.res);
+      ctx.respond = false;
+      ctx.res.statusCode = 200;
+    });
 
 
-  server.use(router.allowedMethods());
-  server.use(router.routes());
+    server.use(router.allowedMethods());
+    server.use(router.routes());
 
-  server.listen(port, () => {
-    console.log(`> Ready on http://localhost:${port}`);
+    server.listen(port, () => {
+      console.log(`> Ready on http://localhost:${port}`);
+    });
   });
 });
