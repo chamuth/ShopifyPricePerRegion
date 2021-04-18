@@ -11,6 +11,8 @@ const { ApiVersion } = require('@shopify/koa-shopify-graphql-proxy');
 const Router = require('koa-router');
 const { receiveWebhook, registerWebhook } = require('@shopify/koa-shopify-webhooks');
 
+const { Pool } = require("pg");
+
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -27,6 +29,14 @@ app.prepare().then(() => {
   const router = new Router();
   server.use(session({ sameSite: 'none', secure: true }, server));
   server.keys = [SHOPIFY_API_SECRET_KEY];
+
+  server.pool = new Pool({
+    user: 'prrsbxxhpdgjwi',
+    host: 'ec2-52-23-45-36.compute-1.amazonaws.com',
+    database: 'd3nb7unse3sq4u',
+    password: 'b470a762490ee281efa562d75def798a019c3b4dac411bb2737f2eeb4cc77965', 
+    port: 5432,
+  });
 
   server.use(
     createShopifyAuth({
@@ -49,6 +59,11 @@ app.prepare().then(() => {
   router.post('/webhooks/products/create', webhook, (ctx) => {
     console.log('received webhook: ', ctx.state.webhook);
   });
+
+  router.get("/api/rates", async (ctx) => {
+    const { rows } = await ctx.app.pool.query("SELECT * FROM exchange_rates")
+    ctx.body = JSON.stringify(rows);
+  })
 
   server.use(graphQLProxy({ version: ApiVersion.July20 }));
 
