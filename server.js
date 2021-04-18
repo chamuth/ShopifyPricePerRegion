@@ -54,7 +54,7 @@ app.prepare().then(() => {
   router.get('/api/rates', async (ctx, _) => {
     var db = await getDatabase();
 
-    db.query(`SELECT * FROM rates;`).then((val) => {
+    db.query(`SELECT * FROM exchange_rates;`).then((val) => {
       ctx.body = JSON.stringify(val);
     }, (reason) => {
       ctx.body = JSON.stringify(reason);
