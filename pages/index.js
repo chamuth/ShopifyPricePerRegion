@@ -232,7 +232,7 @@ class Index extends React.Component {
                     </tr>
                   </tbody>
                 </table>
-                <button class="btn" type="submit" onClick={submitRates} style={{marginTop:25}}>Update Rates</button>
+                <button class="btn" type="submit" onClick={this.submitRates} style={{marginTop:25}}>Update Rates</button>
               </div>
             }
           </div>
