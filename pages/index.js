@@ -66,7 +66,16 @@ class Index extends React.Component {
       .then(res => res.json())
       .then((result) => {
         alert(JSON.stringify(result));
-        this.setState({ rates: result });
+        var rates = {};
+
+        result.forEach((x) => {
+          if (x["key"] === "USDEUR")
+            rates["USDEUR"] = x["value"]
+          else if (x["key"] === "USDGBP")
+            rates["USDGBP"] = x["value"]
+        })
+
+        this.setState({ rates: rates });
       });
   }
 
