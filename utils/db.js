@@ -3,6 +3,7 @@ const { Client } = require("pg");
 const getDatabase = async () => 
 {
   var pgClient = new Client("postgres://prrsbxxhpdgjwi:b470a762490ee281efa562d75def798a019c3b4dac411bb2737f2eeb4cc77965@ec2-52-23-45-36.compute-1.amazonaws.com:5432/d3nb7unse3sq4u");
+  pgClient.ssl = true;
   await pgClient.connect();
   return pgClient;
 };
