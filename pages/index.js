@@ -91,15 +91,15 @@ class Index extends React.Component {
 
           <div className="menu">
             <div 
-              onClick={() => this.changeTab("products")} 
-              className={"item waves-effect waves-light " + (this.state.tab === "products" ? "active" : "")}
+              onClick={() => this.changeTab("rates")} 
+              className={"item waves-effect waves-light " + (this.state.tab === "rates" ? "active" : "")}
             >
               <span className="material-icons">euro</span>
               <span className="caption">Exchange Rates</span>
             </div>
             <div 
-              onClick={() => this.changeTab("rates")} 
-              className={"item waves-effect waves-light " + (this.state.tab === "rates" ? "active" : "")}
+              onClick={() => this.changeTab("products")} 
+              className={"item waves-effect waves-light " + (this.state.tab === "products" ? "active" : "")}
             >
               <span className="material-icons">sell</span>
               <span className="caption">Products</span>
@@ -114,7 +114,7 @@ class Index extends React.Component {
     --> */}
         <div className="content">
           <div className="container-fluid">
-            {this.state.tab === "product" && (
+            {this.state.tab === "products" && (
             <div className="card">
 
               <h4 className="title">Products</h4>
@@ -160,7 +160,7 @@ class Index extends React.Component {
               <div className="card">
                 <h4 className="title">Exchange Rates</h4>
 
-                
+
               </div>
             }
           </div>
