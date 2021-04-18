@@ -65,6 +65,7 @@ class Index extends React.Component {
     fetch("/api/rates")
       .then(res => res.json())
       .then((result) => {
+        alert(result);
         this.setState({ rates: result });
       });
   }
