@@ -36,6 +36,7 @@ app.prepare().then(() => {
     database: 'd3nb7unse3sq4u',
     password: 'b470a762490ee281efa562d75def798a019c3b4dac411bb2737f2eeb4cc77965', 
     port: 5432,
+    ssl: true,
   });
 
   server.use(
