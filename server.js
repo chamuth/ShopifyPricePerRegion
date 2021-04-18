@@ -27,7 +27,7 @@ const {
 app.prepare().then(() => {
   const server = new Koa();
   const router = new Router();
-  
+
   server.use(session({ sameSite: 'none', secure: true }, server));
   server.keys = [SHOPIFY_API_SECRET_KEY];
 
@@ -65,6 +65,10 @@ app.prepare().then(() => {
   router.get("/api/rates", async (ctx) => {
     const { rows } = await ctx.app.pool.query("SELECT * FROM exchange_rates")
     ctx.body = JSON.stringify(rows);
+  })
+
+  router.post("/api/rates", (ctx) => {
+    ctx.body = JSON.stringify(ctx.request.query);
   })
 
   server.use(graphQLProxy({ version: ApiVersion.July20 }));
