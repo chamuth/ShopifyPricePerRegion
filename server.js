@@ -68,8 +68,8 @@ app.prepare().then(() => {
   })
 
   router.post("/api/rates", async (ctx) => {
-    var usdeur = ctx.request.query.USDEUR;
-    var usdgbp = ctx.request.query.USDGBP;
+    var usdeur = ctx.request.query["USDEUR"];
+    var usdgbp = ctx.request.query["USDGBP"];
 
     await ctx.app.pool.query(
       `UPDATE exchange_rates SET value = ${usdeur} WHERE key = 'USDEUR'`
