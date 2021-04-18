@@ -61,6 +61,12 @@ class Index extends React.Component {
     this.setState({tab: tab})
   }
 
+  componentDidMount(){
+    fetch("/api/rates").then(res => {
+      alert(res);
+    });
+  }
+
   render() {
     return (
       <div className="main">
@@ -160,7 +166,28 @@ class Index extends React.Component {
               <div className="card">
                 <h4 className="title">Exchange Rates</h4>
 
-
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Currency</th>
+                      <th>Exchange Rate</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>USD to EUR</td>
+                      <td>
+                        <input type="number" step="0.01"></input>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>USD to GBP</td>
+                      <td>
+                        <input type="number" step="0.01"></input>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             }
           </div>
