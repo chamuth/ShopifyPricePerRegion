@@ -5,7 +5,7 @@ const getDatabase = async () =>
   var pgClient = new Client(process.env.DATABASE_URL);
   await pgClient.connect();
   return pgClient;
-}
+};
 // var pgClient = new Client(process.env.DATABASE_URL);
 // pgClient.connect((err) => {
 //   if (err)
@@ -29,4 +29,4 @@ const getDatabase = async () =>
 //   }
 // })
 
-export { getDatabase }
+module.exports = { getDatabase }
