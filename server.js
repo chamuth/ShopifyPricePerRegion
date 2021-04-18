@@ -10,13 +10,12 @@ const { default: graphQLProxy } = require('@shopify/koa-shopify-graphql-proxy');
 const { ApiVersion } = require('@shopify/koa-shopify-graphql-proxy');
 const Router = require('koa-router');
 const { receiveWebhook, registerWebhook } = require('@shopify/koa-shopify-webhooks');
-import { Client } from "pg"
+const { Client } = require("pg");
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
-
 
 const {
   SHOPIFY_API_SECRET_KEY,
@@ -25,23 +24,28 @@ const {
 } = process.env;
 
 var pgClient = new Client(process.env.DATABASE_URL);
-await pgClient.connect((err) => {
+pgClient.connect((err) => {
   if (err)
+  {
     console.log(err);
+  }
   else 
+  {
     console.log("Connected to database");
+
+    pgClient.query(`SELECT EXISTS (
+      SELECT FROM information_schema.tables 
+      WHERE  table_schema = 'schema_name'
+      AND    table_name   = 'table_name'
+    );`).then((val) => {
+      console.log(val);
+    }, (reason) => {
+      console.log ("Rejected")
+      console.log(reason);
+    });
+  }
 })
 
-pgClient.query(`SELECT EXISTS (
-  SELECT FROM information_schema.tables 
-  WHERE  table_schema = 'schema_name'
-  AND    table_name   = 'table_name'
-);`).then((val) => {
-  console.log(val);
-}, (reason) => {
-  console.log ("Rejected")
-  console.log(reason);
-});
 
 app.prepare().then(() => {
   const server = new Koa();
