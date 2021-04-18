@@ -90,8 +90,8 @@ class Index extends React.Component {
               <span className="caption">Installation</span>
             </div>
             <div className="item waves-effect waves-light">
-              <span className="material-icons">language</span>
-              <span className="caption">Countries</span>
+              <span className="material-icons">euro</span>
+              <span className="caption">Exchange Rates</span>
             </div>
             <div className="item active waves-effect waves-light">
               <span className="material-icons">sell</span>
@@ -123,13 +123,14 @@ class Index extends React.Component {
 
               <div className="products-list">
                 <Query query={GET_PRODUCTS} variables={{ query: "title:" + this.state.query }}>
-                  {({data, loading, error}) => {
+                  {({data, loading, error, refetch}) => {
                     if (loading)
                       return <p>Loading products....</p>;
                     if (!loading && !error)
                       return data.products.edges.map((edge) => {
                         return (
                           <ProductCard 
+                            refetch={refetch}
                             id={edge.node.id}
                             title={edge.node.title}
                             image={edge.node.featuredImage.originalSrc}

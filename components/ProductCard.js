@@ -1,10 +1,27 @@
-class ProductCard extends React.Component {
+import { useState, useRef } from "react";
+import gql from 'graphql-tag';
+import { useMutation } from "@apollo/react-hooks";
 
-  preprocessVariants() 
+const ProductCard = (props) => 
+{
+  const UPDATE_PRODUCT = gql`
+  mutation UpdateProduct($input: ProductInput!)
+  {
+    productUpdate(input: $input) {
+      product {
+        id
+      }
+    }
+  }
+  `;
+  const [updateProduct, {loading,error}] = useMutation(UPDATE_PRODUCT);
+  const [updating, setUpdating] = useState(false);
+
+  const preprocessVariants = () => 
   {
     var returner = {};
 
-    this.props.variants.edges.map((edge) => {
+    props.variants.edges.map((edge) => {
       if (!returner[edge.node.sku])
         returner[edge.node.sku] = {};
 
@@ -25,157 +42,192 @@ class ProductCard extends React.Component {
     return returner;
   }
 
+  const saveProduct = (e) => {
+    // process input prices
+    var variants = [];
+
+    Object.keys(prices).forEach((SKU) => {
+      // foreach variant SKUs
+      const originalVariantId = preprocessedVariants[SKU].data.id;
+
+      const USD_price = (prices[SKU]["USD_price"]).current.value
+      const USD_compareAtPrice = (prices[SKU]["USD_compareAtPrice"]).current.value
+      const EUR_price = (prices[SKU]["EUR_price"]).current.value
+      const EUR_compareAtPrice = (prices[SKU]["EUR_compareAtPrice"]).current.value
+      const GBP_price = (prices[SKU]["GBP_price"]).current.value
+      const GBP_compareAtPrice = (prices[SKU]["GBP_compareAtPrice"]).current.value
+
+      const originalVariant = {
+        id: originalVariantId,
+        sku: SKU,
+        price: USD_price,
+        compareAtPrice: (USD_compareAtPrice != "") ? USD_compareAtPrice : null,
+        metafields: [{ namespace: "ppr", key: "pprCurrency", value: "USD" }]
+      }
+
+      const EURVariant = {
+        id: originalVariantId + 1,
+        sku:  SKU,
+        price: EUR_price,
+        compareAtPrice: (EUR_compareAtPrice != "") ? EUR_compareAtPrice : null,
+        metafields: [{ namespace: "ppr", key: "pprCurrency", value: "EUR" }]
+      }
+
+      const GBPVariant = {
+        id: originalVariantId + 2,
+        sku: SKU,
+        price: GBP_price,
+        compareAtPrice: (GBP_compareAtPrice != "") ? GBP_compareAtPrice : null,
+        metafields: [{ namespace: "ppr", key: "pprCurrency", value: "GBP" }]
+      }
+
+      variants.push(originalVariant)
+      if (EUR_price != "")
+        variants.push(EURVariant)
+      if (GBP_price != "")
+        variants.push(GBPVariant)
+    })
+
+    alert(JSON.stringify(variants));
+
+    // updateProduct({ variables: { input : 
+    // {      
+    //   id: props.id, 
+    //   variants: variants
+      
+    // }} }).then(() => {
+    //   props.refetch();
+    // });
+
+    // setUpdating(true);
+
+    e.preventDefault();
+  }
   
-  render() {
-    var preprocessedVariants = this.preprocessVariants();
-    
-    return (
-      <div className="product card">
-        <div className="top">
-          <img src={this.props.image} alt="" />
-          <span className="product-title">{this.props.title}</span>
+  const preprocessedVariants = preprocessVariants();
 
-          <div class="toolbox">
-            <a className="delete-button waves-effect waves-light btn-small green" target="_blank" href={this.props.productUrl}>
-              <i className="material-icons prefix">save</i> Save Product
-            </a>
-            <a className="delete-button waves-effect waves-light btn-small red">
-              <i className="material-icons prefix">delete</i> Delete Product
-            </a>
-          </div>
+  let prices = {};
+  
+  return (
+    <div className="product card">
+      <div className="top">
+        <img src={props.image} alt="" />
+        <span className="product-title">{props.title}</span>
+
+        <div class="toolbox">
+          {loading && updating && <strong class="green-text">Saving Product...</strong>}
+          {!loading && !error && updating && <strong class="green-text">Product Saved</strong>}
+          
+          <a onClick={saveProduct} className="delete-button waves-effect waves-light btn-small green" href="#">
+            <i className="material-icons prefix">save</i> Save Product
+          </a>
+          <a className="delete-button waves-effect waves-light btn-small red">
+            <i className="material-icons prefix">delete</i> Delete Product
+          </a>
         </div>
+      </div>
 
-        <div className="product-content">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Variant</th>
-                <th></th>
-                <th>Global (USD)</th>
-                <th>Europe (EUR)</th>
-                <th>United Kingdom (GBP)</th>
-              </tr>
-            </thead>
+      <div className="product-content">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Variant</th>
+              <th></th>
+              <th>Global (USD)</th>
+              <th>Europe (EUR)</th>
+              <th>United Kingdom (GBP)</th>
+              <th>Status</th>
+            </tr>
+          </thead>
 
-            <tbody>
-              {Object.keys(preprocessedVariants).map((SKU) => {
-                var variant = preprocessedVariants[SKU];
-                return (
-                  <tr>
-                    <td>
-                      <strong>{variant.data.displayName}</strong>
-                      <span className="gray"><strong>SKU: </strong> {SKU}</span>
-                    </td>
-                    <td>
-                      <span>Price</span>
-                      <span>Compare Price</span>
-                    </td>
-                    <td>
-                      <input type="number" step=".01" placeholder="USD 0.00" defaultValue={variant.USD.price}/>
-                      <input type="number" step=".01" placeholder="USD 0.00" className="strikethrough" defaultValue={variant.USD.compareAtPrice} />
-                    </td>
-                    <td>
-                      <input 
-                        type="number" 
-                        step=".01" 
-                        placeholder="EUR 0.00" 
-                        defaultValue={variant.EUR ? variant.EUR.price : ""}
-                      />
-                      <input 
-                        type="number"
-                        step=".01"
-                        placeholder="EUR 0.00"
-                        className="strikethrough" 
-                        defaultValue={variant.EUR ? variant.EUR.compareAtPrice : ""} 
-                      />
-                    </td>
-                    <td>
-                    <input 
-                        type="number" 
-                        step=".01" 
-                        placeholder="GBP 0.00" 
-                        defaultValue={variant.GBP ? variant.GBP.price : ""}
-                      />
-                      <input 
-                        type="number"
-                        step=".01"
-                        placeholder="GBP 0.00"
-                        className="strikethrough" 
-                        defaultValue={variant.GBP ? variant.GBP.compareAtPrice : ""} 
-                      />
-                    </td>
-                  </tr>
-                )
-              })}
+          <tbody>
+            {Object.keys(preprocessedVariants).map((SKU) => {
+              const variant = preprocessedVariants[SKU];
+              const variantComplete = (variant.USD && variant.EUR && variant.GBP);
 
-              {/* {this.props.variants.edges.map((edge) => (
+              prices[SKU] = {};
+              
+              prices[SKU]["USD_price"] = useRef(null);
+              prices[SKU]["USD_compareAtPrice"] = useRef(null);
+              prices[SKU]["EUR_price"] = useRef(null);
+              prices[SKU]["EUR_compareAtPrice"] = useRef(null);
+              prices[SKU]["GBP_price"] = useRef(null);
+              prices[SKU]["GBP_compareAtPrice"] = useRef(null);
+
+              return (
                 <tr>
-                  {JSON.stringify(edge.privateMetafield)}
                   <td>
-                    <strong>{edge.node.displayName}</strong>
-                    <span className="gray"><strong>SKU: </strong> {edge.node.sku}</span>
+                    <strong>{variant.data.displayName}</strong>
+                    <span className="gray"><strong>SKU: </strong> {SKU}</span>
                   </td>
                   <td>
                     <span>Price</span>
                     <span>Compare Price</span>
                   </td>
                   <td>
-                    <input type="number" step=".01" placeholder="USD 0.00" defaultValue={edge.node.price}/>
-                    <input type="number" step=".01" placeholder="USD 0.00" className="strikethrough" defaultValue={edge.node.compareAtPrice} />
+                  <input 
+                      type="number" 
+                      step=".01" 
+                      ref={prices[SKU]["USD_price"]}
+                      placeholder="USD 0.00" 
+                      defaultValue={variant.USD ? variant.USD.price : ""}
+                    />
+                    <input 
+                      type="number"
+                      step=".01"
+                      ref={prices[SKU]["USD_compareAtPrice"]}
+                      placeholder="USD 0.00"
+                      className="strikethrough" 
+                      defaultValue={variant.USD ? variant.USD.compareAtPrice : ""} 
+                    />
                   </td>
                   <td>
-                    <input type="number" step=".01" placeholder="EUR 0.00" />
-                    <input type="number" step=".01" placeholder="EUR 0.00" className="strikethrough" />
+                    <input 
+                      type="number" 
+                      step=".01" 
+                      ref={prices[SKU]["EUR_price"]}
+                      placeholder="EUR 0.00" 
+                      defaultValue={variant.EUR ? variant.EUR.price : ""}
+                    />
+                    <input 
+                      type="number"
+                      step=".01"
+                      ref={prices[SKU]["EUR_compareAtPrice"]}
+                      placeholder="EUR 0.00"
+                      className="strikethrough" 
+                      defaultValue={variant.EUR ? variant.EUR.compareAtPrice : ""} 
+                    />
                   </td>
                   <td>
-                    <input type="number" step=".01" placeholder="EUR 0.00" />
-                    <input type="number" step=".01" placeholder="EUR 0.00" className="strikethrough" />
+                    <input 
+                      type="number" 
+                      step=".01" 
+                      ref={prices[SKU]["GBP_price"]}
+                      placeholder="GBP 0.00" 
+                      defaultValue={variant.GBP ? variant.GBP.price : ""}
+                    />
+                    <input 
+                      type="number"
+                      step=".01"
+                      ref={prices[SKU]["GBP_compareAtPrice"]}
+                      placeholder="GBP 0.00"
+                      className="strikethrough" 
+                      defaultValue={variant.GBP ? variant.GBP.compareAtPrice : ""} 
+                    />
                   </td>
-                  <td>
-                    <input type="number" step=".01" placeholder="GBP 0.00" />
-                    <input type="number" step=".01" placeholder="GBP 0.00" className="strikethrough" />
+                  <td class="text-center">
+                    <span class={"material-icons " + (variantComplete ? "green-text" : "gray-text")}>
+                      check_circle
+                    </span>
                   </td>
                 </tr>
-              ))} */}
-{/* 
-              {Object.keys(proprocessedVariants).map((sku) => {
-                var variants = preprocessedVariants[sku];
-                return (
-                  <tr>
-                    <td>
-                      <strong>{variants[0].node.displayName}</strong>
-                      <span className="gray"><strong>SKU: </strong> {sku}</span>
-                    </td>
-                    <td>
-                      <span>Price</span>
-                      <span>Compare Price</span>
-                    </td>
-                    <td>
-                      <input type="number" step=".01" placeholder="USD 0.00" defaultValue={edge.node.price}/>
-                      <input type="number" step=".01" placeholder="USD 0.00" className="strikethrough" defaultValue={edge.node.compareAtPrice} />
-                    </td>
-                    <td>
-                      <input type="number" step=".01" placeholder="EUR 0.00" />
-                      <input type="number" step=".01" placeholder="EUR 0.00" className="strikethrough" />
-                    </td>
-                    <td>
-                      <input type="number" step=".01" placeholder="EUR 0.00" />
-                      <input type="number" step=".01" placeholder="EUR 0.00" className="strikethrough" />
-                    </td>
-                    <td>
-                      <input type="number" step=".01" placeholder="GBP 0.00" />
-                      <input type="number" step=".01" placeholder="GBP 0.00" className="strikethrough" />
-                    </td>
-                  </tr>
-                )
-              })} */}
-
-            </tbody>
-          </table>
-        </div>
+              )
+            })}
+          </tbody>
+        </table>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default ProductCard;
