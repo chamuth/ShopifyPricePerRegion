@@ -73,8 +73,8 @@ app.prepare().then(() => {
     
     ctx.body = "UPDATE exchange_rates SET value=" + usdeur + " WHERE key='USDEUR'";
 
-    ctx.app.pool.query(`UPDATE exchange_rates SET value=` + usdeur + ` WHERE key="USDEUR"`);
-    ctx.app.pool.query(`UPDATE exchange_rates SET value=` + usdgbp + ` WHERE key="USDGBP"`);
+    ctx.app.pool.query(`UPDATE exchange_rates SET value=` + usdeur + ` WHERE key='USDEUR'`);
+    ctx.app.pool.query(`UPDATE exchange_rates SET value=` + usdgbp + ` WHERE key='USDGBP'`);
   })
 
   server.use(graphQLProxy({ version: ApiVersion.July20 }));

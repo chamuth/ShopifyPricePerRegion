@@ -47,13 +47,18 @@ const GET_PRODUCTS = gql`
 class Index extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {query: ""};
+    this.state = {query: "", tab: "products"};
 
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event) {
     this.setState({query: event.target.value});
+  }
+
+  changeTab(tab)
+  {
+    this.setState({tab: tab})
   }
 
   render() {
@@ -85,15 +90,17 @@ class Index extends React.Component {
           </Query>
 
           <div className="menu">
-            <div className="item waves-effect waves-light">
-              <span className="material-icons">settings</span>
-              <span className="caption">Installation</span>
-            </div>
-            <div className="item waves-effect waves-light">
+            <div 
+              onClick={() => this.changeTab("products")} 
+              className={"item waves-effect waves-light " + (this.state.tab === "products" ? "active" : "")}
+            >
               <span className="material-icons">euro</span>
               <span className="caption">Exchange Rates</span>
             </div>
-            <div className="item active waves-effect waves-light">
+            <div 
+              onClick={() => this.changeTab("rates")} 
+              className={"item waves-effect waves-light " + (this.state.tab === "rates" ? "active" : "")}
+            >
               <span className="material-icons">sell</span>
               <span className="caption">Products</span>
             </div>
@@ -107,6 +114,7 @@ class Index extends React.Component {
     --> */}
         <div className="content">
           <div className="container-fluid">
+            {this.state.tab === "product" && (
             <div className="card">
 
               <h4 className="title">Products</h4>
@@ -146,6 +154,15 @@ class Index extends React.Component {
               </div>
 
             </div>
+            )}
+
+            {this.state.tab === "rates" && 
+              <div className="card">
+                <h4 className="title">Exchange Rates</h4>
+
+                
+              </div>
+            }
           </div>
         </div>
       </div>
