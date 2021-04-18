@@ -52,10 +52,10 @@ const ProductCard = (props) =>
 
       const USD_price = (prices[SKU]["USD_price"]).current.value
       const USD_compareAtPrice = (prices[SKU]["USD_compareAtPrice"]).current.value
-      const EUR_price = (prices[SKU]["EUR_price"]).current.value
-      const EUR_compareAtPrice = (prices[SKU]["EUR_compareAtPrice"]).current.value
-      const GBP_price = (prices[SKU]["GBP_price"]).current.value
-      const GBP_compareAtPrice = (prices[SKU]["GBP_compareAtPrice"]).current.value
+      const EUR_price = (prices[SKU]["EUR_price"]).current.value / props.rates.USDEUR;
+      const EUR_compareAtPrice = (prices[SKU]["EUR_compareAtPrice"]).current.value / props.rates.USDEUR;
+      const GBP_price = (prices[SKU]["GBP_price"]).current.value / props.rates.USDGBP;
+      const GBP_compareAtPrice = (prices[SKU]["GBP_compareAtPrice"]).current.value / props.rates.USDGBP;
 
       const originalVariant = {
         id: originalVariantId,
@@ -187,7 +187,7 @@ const ProductCard = (props) =>
                       step=".01" 
                       ref={prices[SKU]["EUR_price"]}
                       placeholder="EUR 0.00" 
-                      defaultValue={variant.EUR ? variant.EUR.price : ""}
+                      defaultValue={variant.EUR ? (variant.EUR.price * props.rates.USDEUR) : ""}
                     />
                     <input 
                       type="number"
@@ -195,7 +195,7 @@ const ProductCard = (props) =>
                       ref={prices[SKU]["EUR_compareAtPrice"]}
                       placeholder="EUR 0.00"
                       className="strikethrough" 
-                      defaultValue={variant.EUR ? variant.EUR.compareAtPrice : ""} 
+                      defaultValue={variant.EUR ? (variant.EUR.compareAtPrice * props.rates.USDEUR) : ""} 
                     />
                   </td>
                   <td>
@@ -204,7 +204,7 @@ const ProductCard = (props) =>
                       step=".01" 
                       ref={prices[SKU]["GBP_price"]}
                       placeholder="GBP 0.00" 
-                      defaultValue={variant.GBP ? variant.GBP.price : ""}
+                      defaultValue={variant.GBP ? (variant.GBP.price * props.rates.USDGBP) : ""}
                     />
                     <input 
                       type="number"
@@ -212,7 +212,7 @@ const ProductCard = (props) =>
                       ref={prices[SKU]["GBP_compareAtPrice"]}
                       placeholder="GBP 0.00"
                       className="strikethrough" 
-                      defaultValue={variant.GBP ? variant.GBP.compareAtPrice : ""} 
+                      defaultValue={variant.GBP ? (variant.GBP.compareAtPrice * props.rates.USDGBP) : ""} 
                     />
                   </td>
                   <td class="text-center">

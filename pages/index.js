@@ -155,6 +155,7 @@ class Index extends React.Component {
                       return data.products.edges.map((edge) => {
                         return (
                           <ProductCard 
+                            rates={this.state.rates}
                             refetch={refetch}
                             id={edge.node.id}
                             title={edge.node.title}
