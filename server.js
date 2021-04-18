@@ -51,6 +51,10 @@ app.prepare().then(() => {
   router.post('/webhooks/products/create', webhook, (ctx) => {
     console.log('received webhook: ', ctx.state.webhook);
   });
+  router.get('/api/rates', (ctx,next) => {
+    var db = getDatabase();
+    ctx.body = "RATES";
+  });
 
   server.use(graphQLProxy({ version: ApiVersion.July20 }));
 
@@ -60,10 +64,6 @@ app.prepare().then(() => {
     ctx.res.statusCode = 200;
   });
 
-  router.get('/api/rates', (ctx,next) => {
-    var db = getDatabase();
-    ctx.body = "RATES";
-  });
 
   server.use(router.allowedMethods());
   server.use(router.routes());
