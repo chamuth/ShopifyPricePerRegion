@@ -5,16 +5,12 @@ import { useMutation } from "@apollo/react-hooks";
 const ProductCard = (props) => 
 {
   const UPDATE_PRODUCT = gql`
-  mutation productVariantsBulkCreate($variants: [ProductVariantsBulkInput!]!, $productId: ID!) {
-    productVariantsBulkCreate(variants: $variants, productId: $productId) {
+  mutation productUpdate($input: ProductInput!) {
+    productUpdate(input: $input) {
       product {
         id
       }
-      productVariants {
-        id
-      }
       userErrors {
-        code
         field
         message
       }
@@ -101,8 +97,10 @@ const ProductCard = (props) =>
     updateProduct({ variables: 
 
       { 
-        variants : variants,
-        productId : props.id
+        input : { 
+          id : props.id,
+          variants: variants,
+        }
       } 
 
     }).then(() => {
@@ -127,6 +125,7 @@ const ProductCard = (props) =>
         <div class="toolbox">
           {loading && updating && <strong class="green-text">Saving Product...</strong>}
           {!loading && !error && updating && <strong class="green-text">Product Saved</strong>}
+          {error && (<p>{JSON.stringify(error)}</p>)}
           
           <a onClick={saveProduct} className="delete-button waves-effect waves-light btn-small green" href="#">
             <i className="material-icons prefix">save</i> Save Product
