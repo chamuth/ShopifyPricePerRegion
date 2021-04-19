@@ -97,12 +97,10 @@ const ProductCard = (props) =>
         variants.push(GBPVariant)
     })
 
-    alert(JSON.stringify(variants));
-
     var originalProductOptions = [
       "pprCurrency"
     ]; 
-    orginalProductOptions = originalProductOptions.concat(props.node.options.map((option) => option["name"]));
+    originalProductOptions = originalProductOptions.concat(props.node.options.map((option) => option["name"]));
 
     // Set variants for given product id
     var input = { 
