@@ -61,7 +61,6 @@ const ProductCard = (props) =>
       const GBP_compareAtPrice = (prices[SKU]["GBP_compareAtPrice"]).current.value / props.rates.USDGBP;
 
       const originalVariant = {
-        id: originalVariantId,
         sku: SKU,
         price: USD_price,
         compareAtPrice: (USD_compareAtPrice != "") ? USD_compareAtPrice : null,
@@ -69,7 +68,6 @@ const ProductCard = (props) =>
       }
 
       const EURVariant = {
-        id: originalVariantId + 1,
         sku:  SKU,
         price: EUR_price,
         compareAtPrice: (EUR_compareAtPrice != "") ? EUR_compareAtPrice : null,
@@ -77,7 +75,6 @@ const ProductCard = (props) =>
       }
 
       const GBPVariant = {
-        id: originalVariantId + 2,
         sku: SKU,
         price: GBP_price,
         compareAtPrice: (GBP_compareAtPrice != "") ? GBP_compareAtPrice : null,
