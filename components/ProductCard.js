@@ -61,7 +61,7 @@ const ProductCard = (props) =>
   {
     var ret = [];
     options.forEach((option) => {
-      if (option !== "USD" && option !== "EUR" && option !== "GBP")
+      if (!["USD", "GBP", "EUR"].includes(option["value"]))
         ret.push(option["value"])
     });
     return ret;
