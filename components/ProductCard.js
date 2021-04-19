@@ -90,16 +90,15 @@ const ProductCard = (props) =>
 
     alert(JSON.stringify(variants));
 
-    // updateProduct({ variables: { input : 
-    // {      
-    //   id: props.id, 
-    //   variants: variants
-      
-    // }} }).then(() => {
-    //   props.refetch();
-    // });
+    updateProduct({ variables: { input : 
+    {      
+      id: props.id, 
+      variants: variants
+    }} }).then(() => {
+      props.refetch();
+    });
 
-    // setUpdating(true);
+    setUpdating(true);
 
     e.preventDefault();
   }

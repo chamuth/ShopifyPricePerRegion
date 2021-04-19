@@ -88,6 +88,7 @@ class Index extends React.Component {
 
   submitRates()
   {
+    alert(this.usdeurrate.current.value + " " + this.usdgbprate.current.value);
     const requestOptions = {
       method: 'POST'
     };
@@ -232,7 +233,7 @@ class Index extends React.Component {
                     </tr>
                   </tbody>
                 </table>
-                <button class="btn" type="submit" onClick={this.submitRates} style={{marginTop:25}}>Update Rates</button>
+                <button class="btn" onClick={this.submitRates} style={{marginTop:25}}>Update Rates</button>
               </div>
             }
           </div>
