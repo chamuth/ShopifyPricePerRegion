@@ -5,8 +5,7 @@ import { useMutation } from "@apollo/react-hooks";
 const ProductCard = (props) => 
 {
   const UPDATE_PRODUCT = gql`
-  mutation UpdateProductVariants($variants: [ProductVariantsBulkInput!]!, $productId: ID!)
-  {
+  mutation productVariantsBulkCreate($variants: [ProductVariantsBulkInput!]!, $productId: ID!) {
     productVariantsBulkCreate(variants: $variants, productId: $productId) {
       product {
         id
@@ -20,7 +19,7 @@ const ProductCard = (props) =>
         message
       }
     }
-  }
+  }  
   `;
   const [updateProduct, {loading,error}] = useMutation(UPDATE_PRODUCT);
   const [updating, setUpdating] = useState(false);
