@@ -127,15 +127,10 @@ const ProductCard = (props) =>
       variants: variants,
     }
     console.log(JSON.stringify(input));
-    // updateProduct({ variables: 
-
-    //   { 
-    //     input : 
-    //   } 
-
-    // }).then(() => {
-    //   props.refetch();
-    // });
+    updateProduct({ variables: { input : input } })
+      .then(() => {
+        props.refetch();
+      });
 
     setUpdating(true);
 
