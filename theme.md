@@ -162,3 +162,27 @@ function hideRegionModal() {
 }
 document.getElementById("regionContinueShoppingBtn").onclick = hideRegionModal;
 document.querySelector(".region-selector .bg").onclick = hideRegionModal
+
+
+// Product_template
+{% unless product.has_only_default_variant %}
+  <div class="product-form__controls-group">
+    {% for option in product.options_with_values %}
+      {% unless option.name == "pprCurrency" or option.values.size == 1 %}
+      <div class="selector-wrapper js product-form__item">
+        <label for="SingleOptionSelector-{{ forloop.index0 }}">
+          {{ option.name }}
+        </label>
+        <select class="single-option-selector single-option-selector-{{ section.id }} product-form__input"
+          id="SingleOptionSelector-{{ forloop.index0 }}"
+          data-index="option{{ forloop.index }}"
+        >
+          {% for value in option.values %}
+            <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endunless %}
+    {% endfor %}
+  </div>
+{% endunless %}

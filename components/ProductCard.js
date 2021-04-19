@@ -20,6 +20,18 @@ const ProductCard = (props) =>
   const [updateProduct, {loading,error}] = useMutation(UPDATE_PRODUCT);
   const [updating, setUpdating] = useState(false);
 
+  const getCurrencyForVariant = (node)  =>
+  {
+    for(var i = 0; i < node.selectedOptions.length; i++)
+    {
+      if (node.selectedOptions[i].name === "pprCurrency")
+      {
+        return node.selectedOptions[i].value;
+      }
+    }
+    return null;
+  }
+
   const preprocessVariants = () => 
   {
     var returner = {};
@@ -28,8 +40,8 @@ const ProductCard = (props) =>
       if (!returner[edge.node.sku])
         returner[edge.node.sku] = {};
 
-      if (edge.node.pprCurrency)
-        returner[edge.node.sku][edge.node.pprCurrency.value] = {
+      if (getCurrencyForVariant(edge.node))
+        returner[edge.node.sku][getCurrencyForVariant(edge.node)] = {
           price: edge.node.price,
           compareAtPrice: edge.node.compareAtPrice
         };
@@ -51,7 +63,7 @@ const ProductCard = (props) =>
 
     Object.keys(prices).forEach((SKU) => {
       // foreach variant SKUs
-      const originalVariantId = preprocessedVariants[SKU].data.id;
+      const variantOps = preprocessedVariants[SKU]["data"]["options"];
 
       const USD_price = (prices[SKU]["USD_price"]).current.value
       const USD_compareAtPrice = (prices[SKU]["USD_compareAtPrice"]).current.value
@@ -63,22 +75,19 @@ const ProductCard = (props) =>
       const originalVariant = {
         sku: SKU,
         price: USD_price,
-        compareAtPrice: (USD_compareAtPrice != "") ? USD_compareAtPrice : null,
-        metafields: [{ namespace: "ppr", key: "pprCurrency", value: "USD" }]
+        compareAtPrice: (USD_compareAtPrice != "") ? USD_compareAtPrice : null
       }
 
       const EURVariant = {
         sku:  SKU,
         price: EUR_price,
-        compareAtPrice: (EUR_compareAtPrice != "") ? EUR_compareAtPrice : null,
-        metafields: [{ namespace: "ppr", key: "pprCurrency", value: "EUR" }]
+        compareAtPrice: (EUR_compareAtPrice != "") ? EUR_compareAtPrice : null
       }
 
       const GBPVariant = {
         sku: SKU,
         price: GBP_price,
         compareAtPrice: (GBP_compareAtPrice != "") ? GBP_compareAtPrice : null,
-        metafields: [{ namespace: "ppr", key: "pprCurrency", value: "GBP" }]
       }
 
       variants.push(originalVariant)
@@ -90,12 +99,18 @@ const ProductCard = (props) =>
 
     alert(JSON.stringify(variants));
 
+    var originalProductOptions = [
+      "pprCurrency"
+    ]; 
+    orginalProductOptions = originalProductOptions.concat(props.node.options.map((option) => option["name"]));
+
     // Set variants for given product id
     updateProduct({ variables: 
 
       { 
         input : { 
           id : props.id,
+          options: originalProductOptions,
           variants: variants,
         }
       } 

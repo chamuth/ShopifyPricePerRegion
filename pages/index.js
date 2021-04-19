@@ -23,6 +23,7 @@ const GET_PRODUCTS = gql`
             originalSrc
           }
           onlineStoreUrl
+          options { id, name, values}
           variants (first : 5) {
             edges {
               node {
@@ -31,8 +32,9 @@ const GET_PRODUCTS = gql`
                 inventoryQuantity
                 displayName
                 price
-                pprCurrency: metafield(namespace: "ppr", key: "pprCurrency") {
-                  value
+                selectedOptions
+                {
+                  name, value
                 }
                 compareAtPrice
               }
@@ -183,6 +185,7 @@ class Index extends React.Component {
                             image={edge.node.featuredImage.originalSrc}
                             productUrl={edge.node.onlineStoreUrl}
                             variants={edge.node.variants}
+                            node={edge.node}
                           />
                         );
                       })
