@@ -111,7 +111,7 @@ const ProductCard = (props) =>
       options: originalProductOptions,
       variants: variants,
     }
-    alert(input);
+    alert(JSON.stringify(input));
     // updateProduct({ variables: 
 
     //   { 
