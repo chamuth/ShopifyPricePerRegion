@@ -43,7 +43,7 @@ const GET_PRODUCTS = gql`
         }
       }
     }
-    
+
     locations(first: 10) {
       edges {
         node {
@@ -180,11 +180,13 @@ class Index extends React.Component {
               <div className="products-list">
                 <Query query={GET_PRODUCTS} variables={{ query: "title:" + this.state.query }}>
                   {({data, loading, error, refetch}) => {
-                    const lid = data.locations.edges[0].node.id;
-
+                    
                     if (loading)
                       return <p>Loading products....</p>;
+                      
                     if (!loading && !error)
+                    {
+                      const lid = data.locations.edges[0].node.id;
                       return data.products.edges.map((edge) => {
                         return (
                           <ProductCard 
@@ -200,8 +202,9 @@ class Index extends React.Component {
                           />
                         );
                       })
+                    }
                     
-                      return <p>Error {JSON.stringify(error)}</p>
+                    return <p>Error {JSON.stringify(error)}</p>
                   }}
                 </Query>
               </div>
