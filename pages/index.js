@@ -43,6 +43,13 @@ const GET_PRODUCTS = gql`
         }
       }
     }
+    locations(first: 10) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
   }
 `
 
@@ -172,6 +179,8 @@ class Index extends React.Component {
               <div className="products-list">
                 <Query query={GET_PRODUCTS} variables={{ query: "title:" + this.state.query }}>
                   {({data, loading, error, refetch}) => {
+                    const lid = data.locations.edges[0].node.id;
+
                     if (loading)
                       return <p>Loading products....</p>;
                     if (!loading && !error)
@@ -180,6 +189,7 @@ class Index extends React.Component {
                           <ProductCard 
                             rates={this.state.rates}
                             refetch={refetch}
+                            locationId={lid}
                             id={edge.node.id}
                             title={edge.node.title}
                             image={edge.node.featuredImage.originalSrc}

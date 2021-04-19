@@ -63,7 +63,7 @@ const ProductCard = (props) =>
 
     Object.keys(prices).forEach((SKU) => {
       // foreach variant SKUs
-      const variantOps = preprocessedVariants[SKU]["data"]["options"];
+      const inventory = preprocessedVariants[SKU]["data"]["inventoryQuantity"];
 
       const USD_price = (prices[SKU]["USD_price"]).current.value
       const USD_compareAtPrice = (prices[SKU]["USD_compareAtPrice"]).current.value
@@ -75,19 +75,22 @@ const ProductCard = (props) =>
       const originalVariant = {
         sku: SKU,
         price: USD_price,
-        compareAtPrice: (USD_compareAtPrice != "") ? USD_compareAtPrice : null
+        compareAtPrice: (USD_compareAtPrice != "") ? USD_compareAtPrice : null,
+        inventoryQuantities: {availableQuantity: inventory, locationId: props.locationId}
       }
 
       const EURVariant = {
         sku:  SKU,
         price: EUR_price,
-        compareAtPrice: (EUR_compareAtPrice != "") ? EUR_compareAtPrice : null
+        compareAtPrice: (EUR_compareAtPrice != "") ? EUR_compareAtPrice : null,
+        inventoryQuantities: {availableQuantity: inventory, locationId: props.locationId}
       }
 
       const GBPVariant = {
         sku: SKU,
         price: GBP_price,
         compareAtPrice: (GBP_compareAtPrice != "") ? GBP_compareAtPrice : null,
+        inventoryQuantities: {availableQuantity: inventory, locationId: props.locationId}
       }
 
       variants.push(originalVariant)
