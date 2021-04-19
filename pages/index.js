@@ -43,6 +43,7 @@ const GET_PRODUCTS = gql`
         }
       }
     }
+    
     locations(first: 10) {
       edges {
         node {
