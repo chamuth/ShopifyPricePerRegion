@@ -5,11 +5,19 @@ import { useMutation } from "@apollo/react-hooks";
 const ProductCard = (props) => 
 {
   const UPDATE_PRODUCT = gql`
-  mutation UpdateProduct($input: ProductInput!)
+  mutation UpdateProductVariants($variants: [ProductVariantBulkInput!]!, $productId: ID!)
   {
-    productUpdate(input: $input) {
+    productVariantsBulkCreate(variants: $variants, productId: $productId) {
       product {
         id
+      }
+      productVariants {
+        id
+      }
+      userErrors {
+        code
+        field
+        message
       }
     }
   }
@@ -90,11 +98,15 @@ const ProductCard = (props) =>
 
     alert(JSON.stringify(variants));
 
-    updateProduct({ variables: { input : 
-    {      
-      id: props.id, 
-      variants: variants
-    }} }).then(() => {
+    // Set variants for given product id
+    updateProduct({ variables: 
+
+      { 
+        variants : variants,
+        productId : props.id
+      } 
+
+    }).then(() => {
       props.refetch();
     });
 
