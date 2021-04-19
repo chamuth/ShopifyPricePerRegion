@@ -105,19 +105,21 @@ const ProductCard = (props) =>
     orginalProductOptions = originalProductOptions.concat(props.node.options.map((option) => option["name"]));
 
     // Set variants for given product id
-    updateProduct({ variables: 
+    var input = { 
+      id : props.id,
+      options: originalProductOptions,
+      variants: variants,
+    }
+    alert(input);
+    // updateProduct({ variables: 
 
-      { 
-        input : { 
-          id : props.id,
-          options: originalProductOptions,
-          variants: variants,
-        }
-      } 
+    //   { 
+    //     input : 
+    //   } 
 
-    }).then(() => {
-      props.refetch();
-    });
+    // }).then(() => {
+    //   props.refetch();
+    // });
 
     setUpdating(true);
 
