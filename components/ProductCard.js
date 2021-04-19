@@ -57,6 +57,16 @@ const ProductCard = (props) =>
     return returner;
   }
 
+  const processVariantOptions = (options) =>
+  {
+    var ret = [];
+    options.forEach((option) => {
+      if (option !== "USD" && option !== "EUR" && option !== "GBP")
+        ret.push(option["value"])
+    });
+    return ret;
+  }
+
   const saveProduct = (e) => {
     // process input prices
     var variants = [];
@@ -64,6 +74,8 @@ const ProductCard = (props) =>
     Object.keys(prices).forEach((SKU) => {
       // foreach variant SKUs
       const inventory = preprocessedVariants[SKU]["data"]["inventoryQuantity"];
+
+      const originalOptions = processVariantOptions(preprocessedVariants[SKU]["data"]["selectedOptions"]);
 
       const USD_price = (prices[SKU]["USD_price"]).current.value
       const USD_compareAtPrice = (prices[SKU]["USD_compareAtPrice"]).current.value
@@ -76,6 +88,7 @@ const ProductCard = (props) =>
         sku: SKU,
         price: USD_price,
         compareAtPrice: (USD_compareAtPrice != "") ? USD_compareAtPrice : null,
+        options: ["USD"].concat(originalOptions),
         inventoryQuantities: {availableQuantity: inventory, locationId: props.locationId}
       }
 
@@ -83,6 +96,7 @@ const ProductCard = (props) =>
         sku:  SKU,
         price: EUR_price,
         compareAtPrice: (EUR_compareAtPrice != "") ? EUR_compareAtPrice : null,
+        options: ["EUR"].concat(originalOptions),
         inventoryQuantities: {availableQuantity: inventory, locationId: props.locationId}
       }
 
@@ -90,6 +104,7 @@ const ProductCard = (props) =>
         sku: SKU,
         price: GBP_price,
         compareAtPrice: (GBP_compareAtPrice != "") ? GBP_compareAtPrice : null,
+        options: ["GBP"].concat(originalOptions),
         inventoryQuantities: {availableQuantity: inventory, locationId: props.locationId}
       }
 
