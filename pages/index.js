@@ -190,7 +190,7 @@ class Index extends React.Component {
 
               <div className="products-list">
                 <Query query={GET_PRODUCTS} variables={{ 
-                  query: "title:" + this.state.query,
+                  query: "title:" + this.state.query + " ",
                   pageSize: 20
                 }}>
                   {({data, loading, error, refetch}) => {
