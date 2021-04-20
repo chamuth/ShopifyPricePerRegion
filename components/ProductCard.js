@@ -136,6 +136,10 @@ const ProductCard = (props) =>
 
     e.preventDefault();
   }
+
+  const formatPrice = (num) => {
+    return (Math.round(num * 100) / 100).toFixed(2);
+  }
   
   const preprocessedVariants = preprocessVariants();
 
@@ -204,7 +208,7 @@ const ProductCard = (props) =>
                       step=".01" 
                       ref={prices[SKU]["USD_price"]}
                       placeholder="USD 0.00" 
-                      defaultValue={variant.USD ? variant.USD.price : ""}
+                      defaultValue={variant.USD ? formatPrice(variant.USD.price) : ""}
                     />
                     <input 
                       type="number"
@@ -212,7 +216,7 @@ const ProductCard = (props) =>
                       ref={prices[SKU]["USD_compareAtPrice"]}
                       placeholder="USD 0.00"
                       className="strikethrough" 
-                      defaultValue={variant.USD ? variant.USD.compareAtPrice : ""} 
+                      defaultValue={variant.USD ? formatPrice(variant.USD.compareAtPrice) : ""} 
                     />
                   </td>
                   <td>
@@ -221,7 +225,7 @@ const ProductCard = (props) =>
                       step=".01" 
                       ref={prices[SKU]["EUR_price"]}
                       placeholder="EUR 0.00" 
-                      defaultValue={variant.EUR ? (variant.EUR.price * props.rates.USDEUR) : ""}
+                      defaultValue={variant.EUR ? formatPrice(variant.EUR.price * props.rates.USDEUR) : ""}
                     />
                     <input 
                       type="number"
@@ -229,7 +233,7 @@ const ProductCard = (props) =>
                       ref={prices[SKU]["EUR_compareAtPrice"]}
                       placeholder="EUR 0.00"
                       className="strikethrough" 
-                      defaultValue={variant.EUR ? (variant.EUR.compareAtPrice * props.rates.USDEUR) : ""} 
+                      defaultValue={variant.EUR ? formatPrice(variant.EUR.compareAtPrice * props.rates.USDEUR) : ""} 
                     />
                   </td>
                   <td>
@@ -238,7 +242,7 @@ const ProductCard = (props) =>
                       step=".01" 
                       ref={prices[SKU]["GBP_price"]}
                       placeholder="GBP 0.00" 
-                      defaultValue={variant.GBP ? (variant.GBP.price * props.rates.USDGBP) : ""}
+                      defaultValue={variant.GBP ? formatPrice(variant.GBP.price * props.rates.USDGBP) : ""}
                     />
                     <input 
                       type="number"
@@ -246,7 +250,7 @@ const ProductCard = (props) =>
                       ref={prices[SKU]["GBP_compareAtPrice"]}
                       placeholder="GBP 0.00"
                       className="strikethrough" 
-                      defaultValue={variant.GBP ? (variant.GBP.compareAtPrice * props.rates.USDGBP) : ""} 
+                      defaultValue={variant.GBP ? formatPrice(variant.GBP.compareAtPrice * props.rates.USDGBP) : ""} 
                     />
                   </td>
                   <td class="text-center">
