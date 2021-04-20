@@ -1,6 +1,7 @@
 import ProductCard from "../components/ProductCard";
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import ReactPaginate from 'react-paginate';
 
 const GET_SHOP = gql`
   query GetShop {
@@ -12,8 +13,9 @@ const GET_SHOP = gql`
   }
 `
 const GET_PRODUCTS = gql`
-  query GetProducts($query: String!) {
-    products (first: 50, query: $query) {
+  query GetProducts($query: String!, $offset: Int!. $pageSize: Int!) {
+    products (first: $pageSize, offset: $offset, query: $query) {
+      count
       edges {
         node {
           id
@@ -57,7 +59,7 @@ const GET_PRODUCTS = gql`
 class Index extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {query: "", tab: "products", rates: {}};
+    this.state = {query: "", tab: "products", rates: {}, offset: 0};
 
     this.handleChange = this.handleChange.bind(this);
 
@@ -107,6 +109,16 @@ class Index extends React.Component {
       .then((_) => {
         this.refetchRates();
       });
+  }
+
+  pageCount()
+  {
+    return Math.ceil(count/10)
+  }
+
+  onPaginate(data)
+  {
+    this.setState({ offset: Math.ceil(data.selected * this.props.perPage) });
   }
 
   render() {
@@ -178,7 +190,11 @@ class Index extends React.Component {
               {this.state.query !== "" && <p>Showing results for &quot;{this.state.query}&quot;</p>}
 
               <div className="products-list">
-                <Query query={GET_PRODUCTS} variables={{ query: "title:" + this.state.query }}>
+                <Query query={GET_PRODUCTS} variables={{ 
+                  query: "title:" + this.state.query,
+                  pageSize: 10,
+                  offset: this.state.offset
+                }}>
                   {({data, loading, error, refetch}) => {
                     
                     if (loading)
@@ -187,26 +203,39 @@ class Index extends React.Component {
                     if (!loading && !error)
                     {
                       const lid = data.locations.edges[0].node.id;
-                      return data.products.edges.map((edge) => {
-                        return (
-                          <ProductCard 
-                            rates={this.state.rates}
-                            refetch={refetch}
-                            locationId={lid}
-                            id={edge.node.id}
-                            title={edge.node.title}
-                            image={edge.node.featuredImage.originalSrc}
-                            productUrl={edge.node.onlineStoreUrl}
-                            variants={edge.node.variants}
-                            node={edge.node}
+
+                      return (
+                        <>
+                          {data.products.edges.map((edge) => {
+                            return (
+                              <ProductCard 
+                                rates={this.state.rates}
+                                refetch={refetch}
+                                locationId={lid}
+                                id={edge.node.id}
+                                title={edge.node.title}
+                                image={edge.node.featuredImage.originalSrc}
+                                productUrl={edge.node.onlineStoreUrl}
+                                variants={edge.node.variants}
+                                node={edge.node}
+                              />
+                            );
+                          })}
+                          <ReactPaginate 
+                            pageCount={this.pageCount(data.count)}
+                            pageRangeDisplayed={5}
+                            marginPagesDisplayed={2}
+                            onPageChange={this.onPaginate}
                           />
-                        );
-                      })
+                        </>
+                      );
                     }
+                    
                     
                     return <p>Error {JSON.stringify(error)}</p>
                   }}
                 </Query>
+
               </div>
 
             </div>
