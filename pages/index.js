@@ -102,7 +102,7 @@ class Index extends React.Component {
       });
   }
 
-  submitRates()
+  submitRates = () =>
   {
     alert(this.state.usdeurrate.current.value + " " + this.state.usdgbprate.current.value);
     const requestOptions = {
