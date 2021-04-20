@@ -1,7 +1,6 @@
 import ProductCard from "../components/ProductCard";
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import ReactPaginate from 'react-paginate';
 
 const GET_SHOP = gql`
   query GetShop {
@@ -13,10 +12,10 @@ const GET_SHOP = gql`
   }
 `
 const GET_PRODUCTS = gql`
-  query GetProducts($query: String!, $offset: Int!, $pageSize: Int!) {
-    products (first: $pageSize, offset: $offset, query: $query) {
-      count
+  query GetProducts($query: String!, $pageSize: Int!) {
+    products (first: $pageSize, query: $query) {
       edges {
+        cursor
         node {
           id
           title 
@@ -59,7 +58,7 @@ const GET_PRODUCTS = gql`
 class Index extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {query: "", tab: "products", rates: {}, offset: 0};
+    this.state = {query: "", tab: "products", rates: {}, after: null, previousAfter: null};
 
     this.handleChange = this.handleChange.bind(this);
 
@@ -192,8 +191,7 @@ class Index extends React.Component {
               <div className="products-list">
                 <Query query={GET_PRODUCTS} variables={{ 
                   query: "title:" + this.state.query,
-                  pageSize: 10,
-                  offset: this.state.offset
+                  pageSize: 20
                 }}>
                   {({data, loading, error, refetch}) => {
                     
@@ -221,16 +219,9 @@ class Index extends React.Component {
                               />
                             );
                           })}
-                          <ReactPaginate 
-                            pageCount={this.pageCount(data.count)}
-                            pageRangeDisplayed={5}
-                            marginPagesDisplayed={2}
-                            onPageChange={this.onPaginate}
-                          />
                         </>
                       );
                     }
-                    
                     
                     return <p>Error {JSON.stringify(error)}</p>
                   }}
