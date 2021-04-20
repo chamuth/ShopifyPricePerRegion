@@ -58,12 +58,17 @@ const GET_PRODUCTS = gql`
 class Index extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {query: "", tab: "products", rates: {}, after: null, previousAfter: null};
+    this.state = {
+      query: "",
+      tab: "products",
+      rates: {},
+      after: null,
+      previousAfter: null,
+      usdeurrate: React.createRef(),
+      usdgbprate: React.createRef(),
+    };
 
     this.handleChange = this.handleChange.bind(this);
-
-    this.usdeurrate = React.createRef();
-    this.usdgbprate = React.createRef();
   }
 
   handleChange(event) {
@@ -99,7 +104,7 @@ class Index extends React.Component {
 
   submitRates()
   {
-    alert(this.usdeurrate.current.value + " " + this.usdgbprate.current.value);
+    alert(this.state.usdeurrate.current.value + " " + this.state.usdgbprate.current.value);
     const requestOptions = {
       method: 'POST'
     };
@@ -251,7 +256,7 @@ class Index extends React.Component {
                           type="number" 
                           step="0.01" 
                           name="USDEUR"
-                          ref={this.usdeurrate}
+                          ref={this.state.usdeurrate}
                           defaultValue={this.state.rates.USDEUR}
                         ></input>
                       </td>
@@ -263,7 +268,7 @@ class Index extends React.Component {
                           type="number" 
                           step="0.01"
                           name="USDGBP"
-                          ref={this.usdgbprate}
+                          ref={this.state.usdgbprate}
                           defaultValue={this.state.rates.USDGBP}
                         ></input>
                       </td>
