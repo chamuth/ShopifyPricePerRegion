@@ -13,7 +13,7 @@ const GET_SHOP = gql`
 `
 const GET_PRODUCTS = gql`
   query GetProducts($query: String!) {
-    products (first: 5, query: $query) {
+    products (first: 50, query: $query) {
       edges {
         node {
           id
