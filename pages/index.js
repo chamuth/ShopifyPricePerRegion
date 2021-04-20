@@ -13,7 +13,7 @@ const GET_SHOP = gql`
   }
 `
 const GET_PRODUCTS = gql`
-  query GetProducts($query: String!, $offset: Int!. $pageSize: Int!) {
+  query GetProducts($query: String!, $offset: Int!, $pageSize: Int!) {
     products (first: $pageSize, offset: $offset, query: $query) {
       count
       edges {
