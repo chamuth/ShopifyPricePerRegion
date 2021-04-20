@@ -118,7 +118,6 @@ class Index extends React.Component {
       + "&USDGBP=" 
       + this.state.usdgbprate.current.value,
     requestOptions)
-      .then(response => response.json())
       .then((_) => {
         this.setState({
           savingRates: false
