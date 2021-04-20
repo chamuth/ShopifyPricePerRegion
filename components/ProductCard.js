@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import gql from 'graphql-tag';
 import { useMutation } from "@apollo/react-hooks";
+import { NoUnusedFragmentsRule } from "graphql";
 
 const ProductCard = (props) => 
 {
@@ -30,6 +31,12 @@ const ProductCard = (props) =>
       }
     }
     return null;
+  }
+
+  const limitLength = (str) => {
+    if (str.length > 50)
+      return str.substr(0, 50) + "...";
+    else return str;
   }
 
   const preprocessVariants = () => 
@@ -195,8 +202,8 @@ const ProductCard = (props) =>
               return (
                 <tr>
                   <td>
-                    <strong>{variant.data.displayName}</strong>
-                    <span className="gray"><strong>SKU: </strong> {SKU}</span>
+                    <strong>{limitLength(variant.data.displayName)}</strong>
+                    <span className="gray"><strong>SKU: </strong> {limitLength(SKU)}</span>
                   </td>
                   <td>
                     <span>Price</span>
