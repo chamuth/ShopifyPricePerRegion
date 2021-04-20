@@ -66,6 +66,7 @@ class Index extends React.Component {
       previousAfter: null,
       usdeurrate: React.createRef(),
       usdgbprate: React.createRef(),
+      savingRates: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -104,13 +105,24 @@ class Index extends React.Component {
 
   submitRates = () =>
   {
-    alert(this.state.usdeurrate.current.value + " " + this.state.usdgbprate.current.value);
     const requestOptions = {
       method: 'POST'
     };
-    fetch("/api/rates?USDEUR=" + this.usdeurrate.current.value + "&USDGBP=" + this.usdgbprate.current.value, requestOptions)
+    this.setState({
+      savingRates: true
+    })
+
+    fetch(
+      "/api/rates?USDEUR=" 
+      + this.state.usdeurrate.current.value 
+      + "&USDGBP=" 
+      + this.state.usdgbprate.current.value,
+    requestOptions)
       .then(response => response.json())
       .then((_) => {
+        this.setState({
+          savingRates: false
+        })
         this.refetchRates();
       });
   }
@@ -275,7 +287,8 @@ class Index extends React.Component {
                     </tr>
                   </tbody>
                 </table>
-                <button class="btn" onClick={this.submitRates} style={{marginTop:25}}>Update Rates</button>
+                <button class="btn" onClick={this.submitRates} disabled={this.state.savingRates} style={{marginTop:25}}>Update Rates</button>
+                {this.state.savingRates && <span class="green-text" style="margin-left:20px;">Saving Exchange Rates...</span>}
               </div>
             }
           </div>
