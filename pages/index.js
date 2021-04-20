@@ -288,7 +288,7 @@ class Index extends React.Component {
                   </tbody>
                 </table>
                 <button class="btn" onClick={this.submitRates} disabled={this.state.savingRates} style={{marginTop:25}}>Update Rates</button>
-                {this.state.savingRates && <span class="green-text" style="margin-left:20px;">Saving Exchange Rates...</span>}
+                {this.state.savingRates && <span class="green-text" style={{marginLeft:20}}>Saving Exchange Rates...</span>}
               </div>
             }
           </div>
