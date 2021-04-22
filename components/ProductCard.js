@@ -84,12 +84,12 @@ const ProductCard = (props) =>
 
       const originalOptions = processVariantOptions(preprocessedVariants[SKU]["data"]["selectedOptions"]);
 
-      const USD_price = (prices[SKU]["USD_price"]).current.value
-      const USD_compareAtPrice = (prices[SKU]["USD_compareAtPrice"]).current.value
-      const EUR_price = (prices[SKU]["EUR_price"]).current.value / props.rates.USDEUR;
-      const EUR_compareAtPrice = (prices[SKU]["EUR_compareAtPrice"]).current.value / props.rates.USDEUR;
-      const GBP_price = (prices[SKU]["GBP_price"]).current.value / props.rates.USDGBP;
-      const GBP_compareAtPrice = (prices[SKU]["GBP_compareAtPrice"]).current.value / props.rates.USDGBP;
+      const USD_price = formatPrice((prices[SKU]["USD_price"]).current.value)
+      const USD_compareAtPrice = formatPrice((prices[SKU]["USD_compareAtPrice"]).current.value)
+      const EUR_price = formatPrice((prices[SKU]["EUR_price"]).current.value / props.rates.USDEUR);
+      const EUR_compareAtPrice = formatPrice((prices[SKU]["EUR_compareAtPrice"]).current.value / props.rates.USDEUR);
+      const GBP_price = formatPrice((prices[SKU]["GBP_price"]).current.value / props.rates.USDGBP);
+      const GBP_compareAtPrice = formatPrice((prices[SKU]["GBP_compareAtPrice"]).current.value / props.rates.USDGBP);
 
       const originalVariant = {
         sku: SKU,
