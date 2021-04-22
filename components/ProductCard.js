@@ -117,9 +117,9 @@ const ProductCard = (props) =>
 
 
       variants.push(originalVariant)
-      if (EUR_price != "")
+      if (EUR_price != "" && EUR_price != null)
         variants.push(EURVariant)
-      if (GBP_price != "")
+      if (GBP_price != "" && GBP_price != null)
         variants.push(GBPVariant)
     })
 
