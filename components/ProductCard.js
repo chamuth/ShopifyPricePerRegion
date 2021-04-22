@@ -94,7 +94,7 @@ const ProductCard = (props) =>
       const originalVariant = {
         sku: SKU,
         price: USD_price.toString(),
-        compareAtPrice: (USD_compareAtPrice != null ? USD_compareAtPrice.toString() : null,
+        compareAtPrice: (USD_compareAtPrice != null) ? USD_compareAtPrice.toString() : null,
         options: ["USD"].concat(originalOptions),
         inventoryQuantities: {availableQuantity: inventory, locationId: props.locationId}
       }
@@ -102,7 +102,7 @@ const ProductCard = (props) =>
       const EURVariant = {
         sku:  SKU,
         price: EUR_price.toString(),
-        compareAtPrice: (EUR_compareAtPrice != null ? EUR_compareAtPrice.toString() : null,
+        compareAtPrice: (EUR_compareAtPrice != null) ? EUR_compareAtPrice.toString() : null,
         options: ["EUR"].concat(originalOptions),
         inventoryQuantities: {availableQuantity: inventory, locationId: props.locationId}
       }
@@ -110,7 +110,7 @@ const ProductCard = (props) =>
       const GBPVariant = {
         sku: SKU,
         price: GBP_price.toString(),
-        compareAtPrice: (GBP_compareAtPrice != null ? GBP_compareAtPrice.toString() : null,
+        compareAtPrice: (GBP_compareAtPrice != null) ? GBP_compareAtPrice.toString() : null,
         options: ["GBP"].concat(originalOptions),
         inventoryQuantities: {availableQuantity: inventory, locationId: props.locationId}
       }
