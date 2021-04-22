@@ -147,8 +147,13 @@ const ProductCard = (props) =>
   }
 
   const formatPrice = (num) => {
-    var x = parseFloat(num);
-    return (Math.round(x * 100) / 100).toFixed(2);
+    if (num !== "" && num !== null)
+    {
+      var x = parseFloat(num);
+      return (Math.round(x * 100) / 100).toFixed(2);
+    } else {
+      return null;
+    }
   }
   
   const preprocessedVariants = preprocessVariants();
