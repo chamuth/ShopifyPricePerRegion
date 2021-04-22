@@ -114,7 +114,7 @@ const ProductCard = (props) =>
         options: ["GBP"].concat(originalOptions),
         inventoryQuantities: {availableQuantity: inventory, locationId: props.locationId}
       }
-      
+
 
       variants.push(originalVariant)
       if (EUR_price != "")
@@ -127,7 +127,7 @@ const ProductCard = (props) =>
     var originalProductOptions = [
       "pprCurrency"
     ]; 
-    originalProductOptions = optionsWithoutPPR.concat(props.node.options.map((option) => option["name"]));
+    originalProductOptions = originalProductOptions.concat(optionsWithoutPPR.map((option) => option["name"]));
 
     // Set variants for given product id
     var input = { 
