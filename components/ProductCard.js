@@ -114,6 +114,7 @@ const ProductCard = (props) =>
         options: ["GBP"].concat(originalOptions),
         inventoryQuantities: {availableQuantity: inventory, locationId: props.locationId}
       }
+      
 
       variants.push(originalVariant)
       if (EUR_price != "")
