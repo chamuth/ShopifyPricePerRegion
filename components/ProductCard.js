@@ -6,8 +6,18 @@ import { NoUnusedFragmentsRule } from "graphql";
 const ProductCard = (props) => 
 {
   const UPDATE_PRODUCT = gql`
-  mutation productUpdate($input: ProductInput!) {
-    productUpdate(input: $input) {
+  mutation productUpdate($input1: ProductInput!, $input2: ProductInput!) {
+    productUpdate(input: $input1)
+    {
+      product {
+        id
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+    productUpdate(input: $input2) {
       product {
         id
       }
@@ -128,13 +138,16 @@ const ProductCard = (props) =>
     originalProductOptions = originalProductOptions.concat(props.node.options.map((option) => option["name"]));
 
     // Set variants for given product id
-    var input = { 
+    var input1 = { 
       id : props.id,
       options: originalProductOptions,
+    }
+    var input2 = {
+      id: props.id,
       variants: variants,
     }
     console.log(JSON.stringify(input));
-    updateProduct({ variables: { input : input } })
+    updateProduct({ variables: { input1 : input1, input2: input2 } })
       .then((er) => {
         console.log(JSON.stringify(er));
         props.refetch();
