@@ -146,7 +146,8 @@ const ProductCard = (props) =>
       id: props.id,
       variants: variants,
     }
-    console.log(JSON.stringify(input));
+    console.log(JSON.stringify(input1));
+    console.log(JSON.stringify(input2));
     updateProduct({ variables: { input1 : input1, input2: input2 } })
       .then((er) => {
         console.log(JSON.stringify(er));
