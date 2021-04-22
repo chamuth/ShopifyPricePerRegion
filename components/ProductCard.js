@@ -132,7 +132,7 @@ const ProductCard = (props) =>
     // Set variants for given product id
     var input = { 
       id : props.id,
-      options: originalProductOptions,
+      options: ["pprCurrency", "pprTitle"],
       variants: variants,
     }
     console.log(JSON.stringify(input));
