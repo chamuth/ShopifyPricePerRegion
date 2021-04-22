@@ -77,7 +77,7 @@ app.prepare().then(() => {
     ctx.app.pool.query(`UPDATE exchange_rates SET value=` + usdgbp + ` WHERE key='USDGBP'`);
   })
 
-  server.use(graphQLProxy({ version: ApiVersion.October20 }));
+  server.use(graphQLProxy({ version: ApiVersion.July20 }));
 
   router.get('(.*)', verifyRequest(), async (ctx) => {
     await handle(ctx.req, ctx.res);
