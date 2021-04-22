@@ -93,7 +93,7 @@ const ProductCard = (props) =>
 
       const originalVariant = {
         sku: SKU,
-        price: USD_price,
+        price: USD_price.toString(),
         compareAtPrice: (USD_compareAtPrice != "") ? USD_compareAtPrice : null,
         options: ["USD"].concat(originalOptions),
         inventoryQuantities: {availableQuantity: inventory, locationId: props.locationId}
@@ -101,7 +101,7 @@ const ProductCard = (props) =>
 
       const EURVariant = {
         sku:  SKU,
-        price: EUR_price,
+        price: EUR_price.toString(),
         compareAtPrice: (EUR_compareAtPrice != "") ? EUR_compareAtPrice : null,
         options: ["EUR"].concat(originalOptions),
         inventoryQuantities: {availableQuantity: inventory, locationId: props.locationId}
@@ -109,7 +109,7 @@ const ProductCard = (props) =>
 
       const GBPVariant = {
         sku: SKU,
-        price: GBP_price,
+        price: GBP_price.toString(),
         compareAtPrice: (GBP_compareAtPrice != "") ? GBP_compareAtPrice : null,
         options: ["GBP"].concat(originalOptions),
         inventoryQuantities: {availableQuantity: inventory, locationId: props.locationId}
@@ -122,10 +122,11 @@ const ProductCard = (props) =>
         variants.push(GBPVariant)
     })
 
+    var optionsWithoutPPR = props.node.options.filter((x) => x["name"] != "pprCurrency")
     var originalProductOptions = [
       "pprCurrency"
     ]; 
-    originalProductOptions = originalProductOptions.concat(props.node.options.map((option) => option["name"]));
+    originalProductOptions = optionsWithoutPPR.concat(props.node.options.map((option) => option["name"]));
 
     // Set variants for given product id
     var input = { 
