@@ -135,7 +135,8 @@ const ProductCard = (props) =>
     }
     console.log(JSON.stringify(input));
     updateProduct({ variables: { input : input } })
-      .then(() => {
+      .then((re) => {
+        console.log(JSON.stringify(re))
         props.refetch();
       });
 
