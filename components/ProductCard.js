@@ -133,19 +133,19 @@ const ProductCard = (props) =>
       {
         namespace: "ppr", 
         key: "availability_USD",
-        value: availability["USD"].current.value.toString(),
+        value: (availability["USD"].current.value == "on") ? "true" : "false",
         valueType: "STRING"
       },
       {
         namespace: "ppr", 
         key: "availability_EUR",
-        value: availability["EUR"].current.value.toString(),
+        value: (availability["EUR"].current.value == "on") ? "true" : "false",
         valueType: "STRING"
       },
       {
         namespace: "ppr", 
         key: "availability_GBP",
-        value: availability["GBP"].current.value.toString(),
+        value: (availability["GBP"].current.value == "on") ? "true" : "false",
         valueType: "STRING"
       }   
     ]
@@ -185,8 +185,6 @@ const ProductCard = (props) =>
       EUR: "true",
       GBP: "true",
     }
-
-    console.log(props.metafields.edges)
     
     props.metafields.edges.map((edge) => {
       
