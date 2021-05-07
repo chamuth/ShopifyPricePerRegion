@@ -148,21 +148,21 @@ const ProductCard = (props) =>
         id: preprocessedMetafields["USD"].id,
         namespace: "ppr", 
         key: "availability_USD",
-        value: (availability["USD"].current.checked === "on") ? "true" : "false",
+        value: (availability["USD"].current.checked === true) ? "true" : "false",
         valueType: "STRING"
       },
       {
         id: preprocessedMetafields["EUR"].id,
         namespace: "ppr", 
         key: "availability_EUR",
-        value: (availability["EUR"].current.checked === "on") ? "true" : "false",
+        value: (availability["EUR"].current.checked === true) ? "true" : "false",
         valueType: "STRING"
       },
       {
         id: preprocessedMetafields["GBP"].id,
         namespace: "ppr", 
         key: "availability_GBP",
-        value: (availability["GBP"].current.checked === "on") ? "true" : "false",
+        value: (availability["GBP"].current.checked === true) ? "true" : "false",
         valueType: "STRING"
       }   
     ]
