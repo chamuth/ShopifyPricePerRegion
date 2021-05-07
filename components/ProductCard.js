@@ -187,23 +187,24 @@ const ProductCard = (props) =>
       </div>
 
       <div className="product-availability">
+        <span style="margin-right:25px">Product Availability</span>
         <p>
           <label>
-            <input ref={availability["USD"]} type="checkbox" class="filled-in" checked="checked" />
+            <input ref={availability["USD"]} type="checkbox" checked="checked" />
             <span>Global (USD)</span>
           </label>
         </p>
 
         <p>
           <label>
-            <input ref={availability["EUR"]} type="checkbox" class="filled-in" checked="checked" />
+            <input ref={availability["EUR"]} type="checkbox" checked="checked" />
             <span>Europe (EUR)</span>
           </label>
         </p>
 
         <p>
           <label>
-            <input ref={availability["GBP"]} type="checkbox" class="filled-in" checked="checked" />
+            <input ref={availability["GBP"]} type="checkbox" checked="checked" />
             <span>United Kingdom (GBP)</span>
           </label>
         </p>
