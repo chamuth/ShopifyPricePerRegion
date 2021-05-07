@@ -129,6 +129,10 @@ const ProductCard = (props) =>
     ]; 
     originalProductOptions = originalProductOptions.concat(optionsWithoutPPR.map((option) => option["name"]));
 
+    console.log(availability["USD"].current.value)
+    console.log(availability["EUR"].current.value)
+    console.log(availability["GBP"].current.value)
+
     var metafields = [
       {
         namespace: "ppr", 
