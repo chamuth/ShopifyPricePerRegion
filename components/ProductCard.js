@@ -137,19 +137,19 @@ const ProductCard = (props) =>
       {
         namespace: "ppr", 
         key: "availability_USD",
-        value: (availability["USD"].current.value == "on") ? "true" : "false",
+        value: (availability["USD"].current.value === "on") ? "true" : "false",
         valueType: "STRING"
       },
       {
         namespace: "ppr", 
         key: "availability_EUR",
-        value: (availability["EUR"].current.value == "on") ? "true" : "false",
+        value: (availability["EUR"].current.value === "on") ? "true" : "false",
         valueType: "STRING"
       },
       {
         namespace: "ppr", 
         key: "availability_GBP",
-        value: (availability["GBP"].current.value == "on") ? "true" : "false",
+        value: (availability["GBP"].current.value === "on") ? "true" : "false",
         valueType: "STRING"
       }   
     ]
