@@ -199,15 +199,15 @@ const ProductCard = (props) =>
   const processMetafields = () => {
     var returner = {
       USD: {
-        id: "",
+        id: null,
         value: "true"
       },
       EUR: {
-        id: "",
+        id: null,
         value: "true"
       },
       GBP: {
-        id: "",
+        id: null,
         value: "true"
       }
     }
@@ -275,7 +275,7 @@ const ProductCard = (props) =>
           <label>
             <input 
               ref={availability["USD"]} 
-              defaultChecked={preprocessedMetafields["USD"] === "true"} 
+              defaultChecked={preprocessedMetafields["USD"].value === "true"} 
               name="available_usd" 
               type="checkbox" 
             />
@@ -287,7 +287,7 @@ const ProductCard = (props) =>
           <label>
             <input 
               ref={availability["EUR"]}
-              defaultChecked={preprocessedMetafields["EUR"] === "true"}
+              defaultChecked={preprocessedMetafields["EUR"].value === "true"}
               name="available_eur"
               type="checkbox" 
             />
@@ -299,7 +299,7 @@ const ProductCard = (props) =>
           <label>
             <input 
               ref={availability["GBP"]} 
-              defaultChecked={preprocessedMetafields["GBP"] === "true"}
+              defaultChecked={preprocessedMetafields["GBP"].value === "true"}
               name="available_gbp" 
               type="checkbox" 
             />
