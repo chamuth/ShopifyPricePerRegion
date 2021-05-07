@@ -181,6 +181,21 @@ const ProductCard = (props) =>
         </div>
       </div>
 
+      <div className="product-availability">
+        <label>
+          <input type="checkbox" class="filled-in" checked="checked" />
+          <span>Global (USD)</span>
+        </label>
+        <label>
+          <input type="checkbox" class="filled-in" checked="checked" />
+          <span>Europe (EUR)</span>
+        </label>
+        <label>
+          <input type="checkbox" class="filled-in" checked="checked" />
+          <span>United Kingdom (GBP)</span>
+        </label>
+      </div>
+
       <div className="product-content">
         <table className="table">
           <thead>
