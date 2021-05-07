@@ -146,8 +146,8 @@
   border-radius:5px;
 }
 
-.product .product-availability>*{
-  margin-right: 10px;
+.product .product-availability>span{
+  margin-right: 20px;
 }
 
 .product .product-content 

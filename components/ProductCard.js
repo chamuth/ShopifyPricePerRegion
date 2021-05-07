@@ -129,11 +129,33 @@ const ProductCard = (props) =>
     ]; 
     originalProductOptions = originalProductOptions.concat(optionsWithoutPPR.map((option) => option["name"]));
 
+    var metafields = [
+      {
+        namespace: "ppr", 
+        key: "availability_USD",
+        value: availability["USD"].current.value.toString(),
+        valueType: "STRING"
+      },
+      {
+        namespace: "ppr", 
+        key: "availability_EUR",
+        value: availability["EUR"].current.value.toString(),
+        valueType: "STRING"
+      },
+      {
+        namespace: "ppr", 
+        key: "availability_GBP",
+        value: availability["GBP"].current.value.toString(),
+        valueType: "STRING"
+      }   
+    ]
+
     // Set variants for given product id
     var input = { 
       id : props.id,
       options: ["pprCurrency", "pprTitle"],
       variants: variants,
+      metafields: metafields
     }
     console.log(JSON.stringify(input));
     updateProduct({ variables: { input : input } })
@@ -156,8 +178,34 @@ const ProductCard = (props) =>
       return null;
     }
   }
+
+  const processMetafields = () => {
+    var returner = {
+      USD: "true",
+      EUR: "true",
+      GBP: "true",
+    }
+    
+    props.metafields.edges.map((edge) => {
+      
+      if (edge.node.namespace === "ppr")
+      {
+        if (edge.node.key === "availability_USD")
+          returner["USD"] = edge.node.value
+        
+        if (edge.node.key === "availability_EUR")
+          returner["EUR"] = edge.node.value
+
+        if (edge.node.key === "availability_GBP")
+          returner["GBP"] = edge.node.value
+      }
+    })
+
+    return returner
+  }
   
   const preprocessedVariants = preprocessVariants();
+  const preprocessedMetafields = processMetafields();
 
   let prices = {};
   let availability = {
@@ -190,21 +238,36 @@ const ProductCard = (props) =>
         <span style={{marginRight:25}}>Product Availability</span>
         <p>
           <label>
-            <input ref={availability["USD"]} name="available_usd" type="checkbox" />
+            <input 
+              ref={availability["USD"]} 
+              defaultChecked={preprocessedMetafields["USD"] === "true"} 
+              name="available_usd" 
+              type="checkbox" 
+            />
             <span>Global (USD)</span>
           </label>
         </p>
 
         <p>
           <label>
-            <input ref={availability["EUR"]} name="available_eur" type="checkbox" />
+            <input 
+              ref={availability["EUR"]}
+              defaultChecked={preprocessedMetafields["EUR"] === "true"}
+              name="available_eur"
+              type="checkbox" 
+            />
             <span>Europe (EUR)</span>
           </label>
         </p>
 
         <p>
           <label>
-            <input ref={availability["GBP"]} name="available_gbp" type="checkbox" />
+            <input 
+              ref={availability["GBP"]} 
+              defaultChecked={preprocessedMetafields["GBP"] === "true"}
+              name="available_gbp" 
+              type="checkbox" 
+            />
             <span>United Kingdom (GBP)</span>
           </label>
         </p>

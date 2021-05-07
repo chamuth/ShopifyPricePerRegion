@@ -25,6 +25,15 @@ const GET_PRODUCTS = gql`
           }
           onlineStoreUrl
           options { id, name, values}
+          metafields(first: 5) {
+            edges {
+              node {
+                namespace
+                key
+                value
+              }
+            }
+          }
           variants (first : 5) {
             edges {
               node {
@@ -231,6 +240,7 @@ class Index extends React.Component {
                                 image={edge.node.featuredImage.originalSrc}
                                 productUrl={edge.node.onlineStoreUrl}
                                 variants={edge.node.variants}
+                                metafields={edge.node.metafields}
                                 node={edge.node}
                               />
                             );
