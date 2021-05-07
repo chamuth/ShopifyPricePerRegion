@@ -187,7 +187,7 @@ const ProductCard = (props) =>
       </div>
 
       <div className="product-availability">
-        <span style="margin-right:25px">Product Availability</span>
+        <span style={{marginRight:25}}>Product Availability</span>
         <p>
           <label>
             <input ref={availability["USD"]} type="checkbox" checked="checked" />
