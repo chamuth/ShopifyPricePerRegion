@@ -139,30 +139,30 @@ const ProductCard = (props) =>
     ]; 
     originalProductOptions = originalProductOptions.concat(optionsWithoutPPR.map((option) => option["name"]));
 
-    console.log(availability["USD"].current.value)
-    console.log(availability["EUR"].current.value)
-    console.log(availability["GBP"].current.value)
+    console.log(availability["USD"].current.checked)
+    console.log(availability["EUR"].current.checked)
+    console.log(availability["GBP"].current.checked)
 
     var metafields = [
       {
         id: preprocessedMetafields["USD"].id,
         namespace: "ppr", 
         key: "availability_USD",
-        value: (availability["USD"].current.value === "on") ? "true" : "false",
+        value: (availability["USD"].current.checked === "on") ? "true" : "false",
         valueType: "STRING"
       },
       {
         id: preprocessedMetafields["EUR"].id,
         namespace: "ppr", 
         key: "availability_EUR",
-        value: (availability["EUR"].current.value === "on") ? "true" : "false",
+        value: (availability["EUR"].current.checked === "on") ? "true" : "false",
         valueType: "STRING"
       },
       {
         id: preprocessedMetafields["GBP"].id,
         namespace: "ppr", 
         key: "availability_GBP",
-        value: (availability["GBP"].current.value === "on") ? "true" : "false",
+        value: (availability["GBP"].current.checked === "on") ? "true" : "false",
         valueType: "STRING"
       }   
     ]
