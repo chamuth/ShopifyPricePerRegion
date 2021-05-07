@@ -160,6 +160,11 @@ const ProductCard = (props) =>
   const preprocessedVariants = preprocessVariants();
 
   let prices = {};
+  let availability = {
+    USD: useRef(null),
+    EUR: useRef(null),
+    GBP: useRef(null),
+  };
   
   return (
     <div className="product card">
@@ -182,18 +187,14 @@ const ProductCard = (props) =>
       </div>
 
       <div className="product-availability">
-        <label>
-          <input type="checkbox" class="filled-in" checked="checked" />
-          <span>Global (USD)</span>
-        </label>
-        <label>
-          <input type="checkbox" class="filled-in" checked="checked" />
-          <span>Europe (EUR)</span>
-        </label>
-        <label>
-          <input type="checkbox" class="filled-in" checked="checked" />
-          <span>United Kingdom (GBP)</span>
-        </label>
+        <input ref={availability["USD"]} type="checkbox" class="filled-in" checked="checked" id="available_usd" />
+        <label for="available_usd">Global (USD)</label>
+
+        <input ref={availability["EUR"]} type="checkbox" class="filled-in" checked="checked" id="available_eur" />
+        <label for="available_eur">Europe (EUR)</label>
+        
+        <input ref={availability["GBP"]} type="checkbox" class="filled-in" checked="checked" id="available_gbp" />
+        <label for="available_gbp">United Kingdom (GBP)</label>
       </div>
 
       <div className="product-content">

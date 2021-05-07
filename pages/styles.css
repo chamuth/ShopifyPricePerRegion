@@ -146,6 +146,10 @@
   border-radius:5px;
 }
 
+.product .product-availability>*{
+  margin-right: 10px;
+}
+
 .product .product-content 
 {
   padding: 15px 20px;
