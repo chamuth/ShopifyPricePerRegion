@@ -185,6 +185,8 @@ const ProductCard = (props) =>
       EUR: "true",
       GBP: "true",
     }
+
+    console.log(props.metafields.edges)
     
     props.metafields.edges.map((edge) => {
       
