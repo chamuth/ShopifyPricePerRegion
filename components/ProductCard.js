@@ -10,6 +10,16 @@ const ProductCard = (props) =>
     productUpdate(input: $input) {
       product {
         id
+        metafields(first:4) {
+          edges {
+            node {
+              id
+              namespace
+              key
+              value
+            }
+          }
+        }
       }
       userErrors {
         field
