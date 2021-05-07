@@ -145,18 +145,21 @@ const ProductCard = (props) =>
 
     var metafields = [
       {
+        id: preprocessedMetafields["USD"].id,
         namespace: "ppr", 
         key: "availability_USD",
         value: (availability["USD"].current.value === "on") ? "true" : "false",
         valueType: "STRING"
       },
       {
+        id: preprocessedMetafields["EUR"].id,
         namespace: "ppr", 
         key: "availability_EUR",
         value: (availability["EUR"].current.value === "on") ? "true" : "false",
         valueType: "STRING"
       },
       {
+        id: preprocessedMetafields["GBP"].id,
         namespace: "ppr", 
         key: "availability_GBP",
         value: (availability["GBP"].current.value === "on") ? "true" : "false",
@@ -195,9 +198,18 @@ const ProductCard = (props) =>
 
   const processMetafields = () => {
     var returner = {
-      USD: "true",
-      EUR: "true",
-      GBP: "true",
+      USD: {
+        id: "",
+        value: "true"
+      },
+      EUR: {
+        id: "",
+        value: "true"
+      },
+      GBP: {
+        id: "",
+        value: "true"
+      }
     }
     
     props.metafields.edges.map((edge) => {
@@ -205,13 +217,22 @@ const ProductCard = (props) =>
       if (edge.node.namespace === "ppr")
       {
         if (edge.node.key === "availability_USD")
-          returner["USD"] = edge.node.value
+        {
+          returner["USD"].id = edge.node.id
+          returner["USD"].value = edge.node.value
+        }
         
         if (edge.node.key === "availability_EUR")
-          returner["EUR"] = edge.node.value
+        {
+          returner["EUR"].id = edge.node.id
+          returner["EUR"].value = edge.node.value
+        }
 
         if (edge.node.key === "availability_GBP")
-          returner["GBP"] = edge.node.value
+        {
+          returner["GBP"].id = edge.node.id
+          returner["GBP"].value = edge.node.value
+        }
       }
     })
 

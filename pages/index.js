@@ -28,6 +28,7 @@ const GET_PRODUCTS = gql`
           metafields(first: 5) {
             edges {
               node {
+                id
                 namespace
                 key
                 value
