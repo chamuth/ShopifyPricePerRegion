@@ -95,7 +95,7 @@ const ProductCard = (props) =>
       const originalOptions = processVariantOptions(preprocessedVariants[SKU]["data"]["selectedOptions"]);
 
       const USD_price = formatPrice((prices[SKU]["USD_price"]).current.value / props.rates.EURUSD)
-      const USD_compareAtPrice = formatPrice((prices[SKU]["USD_compareAtPrice"]).current.value.EURUSD)
+      const USD_compareAtPrice = formatPrice((prices[SKU]["USD_compareAtPrice"]).current.value / props.rates.EURUSD)
 
       const EUR_price = formatPrice((prices[SKU]["EUR_price"]).current.value / 1);
       const EUR_compareAtPrice = formatPrice((prices[SKU]["EUR_compareAtPrice"]).current.value / 1);
