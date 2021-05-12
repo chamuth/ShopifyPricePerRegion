@@ -76,6 +76,8 @@ class Index extends React.Component {
       previousAfter: null,
       usdeurrate: React.createRef(),
       usdgbprate: React.createRef(),
+      eurusdrate: React.createRef(),
+      eurgbprate: React.createRef(),
       savingRates: false,
     };
 
@@ -107,6 +109,10 @@ class Index extends React.Component {
             rates["USDEUR"] = x["value"]
           else if (x["key"] === "USDGBP")
             rates["USDGBP"] = x["value"]
+          else if (x["key"] === "EURUSD")
+            rates["EURUSD"] = x["value"]
+          else if (x["key"] === "EURGBP")
+            rates["EURGBP"] = x["value"]
         })
 
         this.setState({ rates: rates });
@@ -123,10 +129,10 @@ class Index extends React.Component {
     })
 
     fetch(
-      "/api/rates?USDEUR=" 
-      + this.state.usdeurrate.current.value 
-      + "&USDGBP=" 
-      + this.state.usdgbprate.current.value,
+      "/api/rates?EURUSD=" 
+      + this.state.eurusdrate.current.value 
+      + "&EURGBP=" 
+      + this.state.eurgbprate.current.value,
     requestOptions)
       .then((_) => {
         this.setState({
@@ -272,26 +278,26 @@ class Index extends React.Component {
                   </thead>
                   <tbody>
                     <tr>
-                      <td>1 USD in EUR</td>
+                      <td>1 EUR in USD</td>
                       <td>
                         <input 
                           type="number" 
                           step="0.01" 
-                          name="USDEUR"
-                          ref={this.state.usdeurrate}
-                          defaultValue={this.state.rates.USDEUR}
+                          name="EURUSD"
+                          ref={this.state.eurusdrate}
+                          defaultValue={this.state.rates.EURUSD}
                         ></input>
                       </td>
                     </tr>
                     <tr>
-                      <td>1 USD in GBP</td>
+                      <td>1 EUR in GBP</td>
                       <td>
                         <input 
                           type="number" 
                           step="0.01"
-                          name="USDGBP"
-                          ref={this.state.usdgbprate}
-                          defaultValue={this.state.rates.USDGBP}
+                          name="EURGBP"
+                          ref={this.state.eurgbprate}
+                          defaultValue={this.state.rates.EURGBP}
                         ></input>
                       </td>
                     </tr>

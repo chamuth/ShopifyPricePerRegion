@@ -63,7 +63,7 @@ const ProductCard = (props) =>
           compareAtPrice: edge.node.compareAtPrice
         };
       else 
-        returner[edge.node.sku]["USD"] = {
+        returner[edge.node.sku]["EUR"] = {
           price: edge.node.price,
           compareAtPrice: edge.node.compareAtPrice
         };
@@ -94,14 +94,16 @@ const ProductCard = (props) =>
 
       const originalOptions = processVariantOptions(preprocessedVariants[SKU]["data"]["selectedOptions"]);
 
-      const USD_price = formatPrice((prices[SKU]["USD_price"]).current.value)
-      const USD_compareAtPrice = formatPrice((prices[SKU]["USD_compareAtPrice"]).current.value)
-      const EUR_price = formatPrice((prices[SKU]["EUR_price"]).current.value / props.rates.USDEUR);
-      const EUR_compareAtPrice = formatPrice((prices[SKU]["EUR_compareAtPrice"]).current.value / props.rates.USDEUR);
-      const GBP_price = formatPrice((prices[SKU]["GBP_price"]).current.value / props.rates.USDGBP);
-      const GBP_compareAtPrice = formatPrice((prices[SKU]["GBP_compareAtPrice"]).current.value / props.rates.USDGBP);
+      const USD_price = formatPrice((prices[SKU]["USD_price"]).current.value / props.rates.EURUSD)
+      const USD_compareAtPrice = formatPrice((prices[SKU]["USD_compareAtPrice"]).current.value.EURUSD)
 
-      const originalVariant = {
+      const EUR_price = formatPrice((prices[SKU]["EUR_price"]).current.value / 1);
+      const EUR_compareAtPrice = formatPrice((prices[SKU]["EUR_compareAtPrice"]).current.value / 1);
+      
+      const GBP_price = formatPrice((prices[SKU]["GBP_price"]).current.value / props.rates.EURGBP);
+      const GBP_compareAtPrice = formatPrice((prices[SKU]["GBP_compareAtPrice"]).current.value / props.rates.EURGBP);
+
+      const USDVariant = {
         sku: SKU,
         price: USD_price.toString(),
         compareAtPrice: (USD_compareAtPrice != null) ? USD_compareAtPrice.toString() : null,
@@ -125,10 +127,9 @@ const ProductCard = (props) =>
         inventoryQuantities: {availableQuantity: inventory, locationId: props.locationId}
       }
 
-
-      variants.push(originalVariant)
-      if (EUR_price != "" && EUR_price != null && EUR_price !== "0.00")
-        variants.push(EURVariant)
+      variants.push(EURVariant)
+      if (USD_price != "" && USD_price != null && USD_price !== "0.00")
+        variants.push(USDVariant)
       if (GBP_price != "" && GBP_price != null && GBP_price !== "0.00")
         variants.push(GBPVariant)
     })
@@ -138,10 +139,6 @@ const ProductCard = (props) =>
       "pprCurrency"
     ]; 
     originalProductOptions = originalProductOptions.concat(optionsWithoutPPR.map((option) => option["name"]));
-
-    console.log(availability["USD"].current.checked)
-    console.log(availability["EUR"].current.checked)
-    console.log(availability["GBP"].current.checked)
 
     var metafields = [
       {
@@ -315,8 +312,8 @@ const ProductCard = (props) =>
             <tr>
               <th>Variant</th>
               <th></th>
+              <th>Europe (Default) (EUR)</th>
               <th>Global (USD)</th>
-              <th>Europe (EUR)</th>
               <th>United Kingdom (GBP)</th>
               <th>Status</th>
             </tr>
@@ -346,30 +343,14 @@ const ProductCard = (props) =>
                     <span>Price</span>
                     <span>Compare Price</span>
                   </td>
-                  <td>
-                  <input 
-                      type="number" 
-                      step=".01" 
-                      ref={prices[SKU]["USD_price"]}
-                      placeholder="USD 0.00" 
-                      defaultValue={variant.USD ? formatPrice(variant.USD.price) : ""}
-                    />
-                    <input 
-                      type="number"
-                      step=".01"
-                      ref={prices[SKU]["USD_compareAtPrice"]}
-                      placeholder="USD 0.00"
-                      className="strikethrough" 
-                      defaultValue={variant.USD ? formatPrice(variant.USD.compareAtPrice) : ""} 
-                    />
-                  </td>
+
                   <td>
                     <input 
                       type="number" 
                       step=".01" 
                       ref={prices[SKU]["EUR_price"]}
                       placeholder="EUR 0.00" 
-                      defaultValue={variant.EUR ? formatPrice(variant.EUR.price * props.rates.USDEUR) : ""}
+                      defaultValue={variant.EUR ? formatPrice(variant.EUR.price * 1) : ""}
                     />
                     <input 
                       type="number"
@@ -377,7 +358,24 @@ const ProductCard = (props) =>
                       ref={prices[SKU]["EUR_compareAtPrice"]}
                       placeholder="EUR 0.00"
                       className="strikethrough" 
-                      defaultValue={variant.EUR ? formatPrice(variant.EUR.compareAtPrice * props.rates.USDEUR) : ""} 
+                      defaultValue={variant.EUR ? formatPrice(variant.EUR.compareAtPrice * 1) : ""} 
+                    />
+                  </td>
+                  <td>
+                    <input 
+                      type="number" 
+                      step=".01" 
+                      ref={prices[SKU]["USD_price"]}
+                      placeholder="USD 0.00" 
+                      defaultValue={variant.USD ? formatPrice(variant.USD.price * props.rates.EURUSD) : ""}
+                    />
+                    <input 
+                      type="number"
+                      step=".01"
+                      ref={prices[SKU]["USD_compareAtPrice"]}
+                      placeholder="USD 0.00"
+                      className="strikethrough" 
+                      defaultValue={variant.USD ? formatPrice(variant.USD.compareAtPrice * props.rates.EURUSD) : ""} 
                     />
                   </td>
                   <td>
@@ -386,7 +384,7 @@ const ProductCard = (props) =>
                       step=".01" 
                       ref={prices[SKU]["GBP_price"]}
                       placeholder="GBP 0.00" 
-                      defaultValue={variant.GBP ? formatPrice(variant.GBP.price * props.rates.USDGBP) : ""}
+                      defaultValue={variant.GBP ? formatPrice(variant.GBP.price * props.rates.EURGBP) : ""}
                     />
                     <input 
                       type="number"
@@ -394,9 +392,10 @@ const ProductCard = (props) =>
                       ref={prices[SKU]["GBP_compareAtPrice"]}
                       placeholder="GBP 0.00"
                       className="strikethrough" 
-                      defaultValue={variant.GBP ? formatPrice(variant.GBP.compareAtPrice * props.rates.USDGBP) : ""} 
+                      defaultValue={variant.GBP ? formatPrice(variant.GBP.compareAtPrice * props.rates.EURGBP) : ""} 
                     />
                   </td>
+
                   <td class="text-center">
                     <span class={"material-icons " + (variantComplete ? "green-text" : "gray-text")}>
                       check_circle

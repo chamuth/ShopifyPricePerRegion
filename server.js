@@ -68,13 +68,13 @@ app.prepare().then(() => {
   })
 
   router.post("/api/rates", (ctx) => {
-    var usdeur = ctx.request.query["USDEUR"];
-    var usdgbp = ctx.request.query["USDGBP"];
+    var eurusd = ctx.request.query["EURUSD"];
+    var eurgbp = ctx.request.query["EURGBP"];
     
-    ctx.body = "UPDATE exchange_rates SET value=" + usdeur + " WHERE key='USDEUR'";
+    // ctx.body = "UPDATE exchange_rates SET value=" + usdeur + " WHERE key='USDEUR'";
 
-    ctx.app.pool.query(`UPDATE exchange_rates SET value=` + usdeur + ` WHERE key='USDEUR'`);
-    ctx.app.pool.query(`UPDATE exchange_rates SET value=` + usdgbp + ` WHERE key='USDGBP'`);
+    ctx.app.pool.query(`UPDATE exchange_rates SET value=` + eurusd + ` WHERE key='EURUSD'`);
+    ctx.app.pool.query(`UPDATE exchange_rates SET value=` + eurgbp + ` WHERE key='EURGBP'`);
   })
 
   server.use(graphQLProxy({ version: ApiVersion.July20 }));
