@@ -86,7 +86,7 @@ class Index extends React.Component {
 
     setInterval(() => {
       this.setState({query: this.state.q});
-    })
+    }, 500)
   }
 
   handleChange(event) {
