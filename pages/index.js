@@ -65,23 +65,11 @@ const GET_PRODUCTS = gql`
   }
 `
 
-function debounce(func, wait, immediate) {
-	var timeout;
-	return function() {
-		var context = this, args = arguments;
-		clearTimeout(timeout);
-		timeout = setTimeout(function() {
-			timeout = null;
-			if (!immediate) func.apply(context, args);
-		}, wait);
-		if (immediate && !timeout) func.apply(context, args);
-	};
-}
-
 class Index extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      q: "",
       query: "",
       tab: "products",
       rates: {},
@@ -95,14 +83,14 @@ class Index extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+
+    setInterval(() => {
+      this.setState({query: this.state.q});
+    })
   }
 
-  changeVal = debounce((event) => {
-    this.setState({query: event.target.value});
-  }, 250);
-
   handleChange(event) {
-    this.changeVal(event);
+    this.setState({q: event.target.value});
   }
 
   changeTab(tab)
