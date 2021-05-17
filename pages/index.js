@@ -218,7 +218,7 @@ class Index extends React.Component {
               <form action="" style={{marginTop:20}}>
                 <div className="input-field col s6">
                   <i className="material-icons prefix">search</i>
-                  <input id="search_query" type="text" value={this.state.query} onChange={this.handleChange} />
+                  <input id="search_query" type="text" value={this.state.q} onChange={this.handleChange} />
                   <label htmlFor="icon_telephone">Search Products</label>
                 </div>
               </form>
