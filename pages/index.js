@@ -1,7 +1,7 @@
 import ProductCard from "../components/ProductCard";
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-
+import _ from "undercsoser"
 const GET_SHOP = gql`
   query GetShop {
     shop {
@@ -65,6 +65,19 @@ const GET_PRODUCTS = gql`
   }
 `
 
+function debounce(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		clearTimeout(timeout);
+		timeout = setTimeout(function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		}, wait);
+		if (immediate && !timeout) func.apply(context, args);
+	};
+}
+
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -84,8 +97,12 @@ class Index extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(event) {
+  changeVal = debounce((event) => {
     this.setState({query: event.target.value});
+  }, 250);
+
+  handleChange(event) {
+    this.changeVal(event);
   }
 
   changeTab(tab)
