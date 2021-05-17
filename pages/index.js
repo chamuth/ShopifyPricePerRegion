@@ -1,7 +1,7 @@
 import ProductCard from "../components/ProductCard";
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import _ from "undercsoser"
+
 const GET_SHOP = gql`
   query GetShop {
     shop {
