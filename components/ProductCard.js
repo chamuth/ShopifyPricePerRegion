@@ -277,7 +277,7 @@ const ProductCard = (props) => {
     GBP: useRef(null),
   }
 
-  const variant = preprocessVariants
+  const variant = preprocessedVariants
   const variantComplete = variant.USD && variant.EUR && variant.GBP
 
   return (
