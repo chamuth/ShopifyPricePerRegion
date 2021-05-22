@@ -63,7 +63,7 @@ app.prepare().then(() => {
 
   // const webhook = receiveWebhook({ secret: SHOPIFY_API_SECRET_KEY })
 
-  app.use(
+  router.use(
     // receive webhooks
     receiveWebhook({
       path: "/webhooks/order/create",
