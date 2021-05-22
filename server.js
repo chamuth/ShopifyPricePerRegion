@@ -88,8 +88,6 @@ app.prepare().then(() => {
     )
   })
 
-  router.post("/api/ordercreatehook")
-
   server.use(graphQLProxy({ version: ApiVersion.July20 }))
 
   router.get("(.*)", verifyRequest(), async (ctx) => {
