@@ -61,20 +61,13 @@ app.prepare().then(() => {
     })
   )
 
-  // const webhook = receiveWebhook({ secret: SHOPIFY_API_SECRET_KEY })
+  const webhook = receiveWebhook({ secret: SHOPIFY_API_SECRET_KEY })
 
-  router.use(
-    // receive webhooks
-    receiveWebhook({
-      path: "/webhooks/order/create",
-      secret: SHOPIFY_API_SECRET_KEY,
-      // called when a valid webhook is received
-      onReceived(ctx) {
-        console.log("WEBHOOK RECEIVED")
-        console.log("received webhook: ", ctx.state.webhook)
-      },
-    })
-  )
+  router.post("/webhooks/order/create", webhook, (ctx) => {
+    console.log("WEBHOOK RECEIDE!!!!!!")
+    console.log("received webhook: ", ctx.state.webhook)
+    ctx.res.statusCode = 200
+  })
 
   router.get("/api/rates", async (ctx) => {
     const { rows } = await ctx.app.pool.query("SELECT * FROM exchange_rates")
@@ -94,6 +87,8 @@ app.prepare().then(() => {
       `UPDATE exchange_rates SET value=` + eurgbp + ` WHERE key='EURGBP'`
     )
   })
+
+  router.post("/api/ordercreatehook")
 
   server.use(graphQLProxy({ version: ApiVersion.July20 }))
 
