@@ -364,9 +364,7 @@ const ProductCard = (props) => {
             <tr>
               <td>
                 <strong>{limitLength(variant.data.displayName)}</strong>
-                <span className="gray">
-                  <strong>SKU: </strong> {limitLength(SKU)}
-                </span>
+                <span className="gray"></span>
               </td>
               <td>
                 <span>Price</span>
