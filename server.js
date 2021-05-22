@@ -70,6 +70,7 @@ app.prepare().then(() => {
       secret: SHOPIFY_API_SECRET_KEY,
       // called when a valid webhook is received
       onReceived(ctx) {
+        console.log("WEBHOOK RECEIVED")
         console.log("received webhook: ", ctx.state.webhook)
       },
     })
@@ -93,8 +94,6 @@ app.prepare().then(() => {
       `UPDATE exchange_rates SET value=` + eurgbp + ` WHERE key='EURGBP'`
     )
   })
-
-  router.post("/api/ordercreatehook")
 
   server.use(graphQLProxy({ version: ApiVersion.July20 }))
 
