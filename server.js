@@ -61,11 +61,19 @@ app.prepare().then(() => {
     })
   )
 
-  const webhook = receiveWebhook({ secret: SHOPIFY_API_SECRET_KEY })
+  // const webhook = receiveWebhook({ secret: SHOPIFY_API_SECRET_KEY })
 
-  router.post("/webhooks/order/create", webhook, (ctx) => {
-    console.log("received webhook: ", ctx.state.webhook)
-  })
+  app.use(
+    // receive webhooks
+    receiveWebhook({
+      path: "/webhooks/order/create",
+      secret: SHOPIFY_API_SECRET_KEY,
+      // called when a valid webhook is received
+      onReceived(ctx) {
+        console.log("received webhook: ", ctx.state.webhook)
+      },
+    })
+  )
 
   router.get("/api/rates", async (ctx) => {
     const { rows } = await ctx.app.pool.query("SELECT * FROM exchange_rates")
