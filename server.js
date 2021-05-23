@@ -133,14 +133,10 @@ app.prepare().then(() => {
         }
        }`,
       }),
+    }).then((result) => {
+      console.log("Set Order Id: " + orderid + " tag to " + currency)
+      console.log(result)
     })
-      .then((result) => {
-        console.log("Set Order Id: " + orderid + " tag to " + currency)
-      })
-      .then((data) => {
-        console.log("data returned:\n", data)
-        res.send(data)
-      })
 
     ctx.body = ctx.request.body
   })
