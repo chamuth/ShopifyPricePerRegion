@@ -135,7 +135,7 @@ app.prepare().then(() => {
       }),
     }).then((result) => {
       console.log("Set Order Id: " + orderid + " tag to " + currency)
-      console.log(result)
+      console.log(JSON.stringify(result))
     })
 
     ctx.body = ctx.request.body
