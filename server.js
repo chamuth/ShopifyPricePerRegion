@@ -9,6 +9,7 @@ const session = require("koa-session")
 const { default: graphQLProxy } = require("@shopify/koa-shopify-graphql-proxy")
 const { ApiVersion } = require("@shopify/koa-shopify-graphql-proxy")
 const Router = require("koa-router")
+const bodyParser = require("koa-bodyparser")
 const {
   receiveWebhook,
   registerWebhook,
@@ -26,6 +27,8 @@ const { SHOPIFY_API_SECRET_KEY, SHOPIFY_API_KEY, HOST } = process.env
 app.prepare().then(() => {
   const server = new Koa()
   const router = new Router()
+
+  router.use(bodyParser())
 
   server.use(session({ sameSite: "none", secure: true }, server))
   server.keys = [SHOPIFY_API_SECRET_KEY]
@@ -61,13 +64,13 @@ app.prepare().then(() => {
     })
   )
 
-  const webhook = receiveWebhook({ secret: SHOPIFY_API_SECRET_KEY })
+  // const webhook = receiveWebhook({ secret: SHOPIFY_API_SECRET_KEY })
 
-  router.post("/webhooks/order/create", webhook, (ctx) => {
-    console.log("WEBHOOK RECEIDE!!!!!!")
-    console.log("received webhook: ", ctx.state.webhook)
-    ctx.res.statusCode = 200
-  })
+  // router.post("/webhooks/order/create", webhook, (ctx) => {
+  //   console.log("WEBHOOK RECEIDE!!!!!!")
+  //   console.log("received webhook: ", ctx.state.webhook)
+  //   ctx.res.statusCode = 200
+  // })
 
   router.get("/api/rates", async (ctx) => {
     const { rows } = await ctx.app.pool.query("SELECT * FROM exchange_rates")
@@ -86,6 +89,10 @@ app.prepare().then(() => {
     ctx.app.pool.query(
       `UPDATE exchange_rates SET value=` + eurgbp + ` WHERE key='EURGBP'`
     )
+  })
+
+  router.post("/webhooks/order/create", async (ctx) => {
+    ctx.body = ctx.request.body
   })
 
   server.use(graphQLProxy({ version: ApiVersion.July20 }))
