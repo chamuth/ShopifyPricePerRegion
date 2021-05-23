@@ -134,10 +134,14 @@ app.prepare().then(() => {
         "X-Shopify-Access-Token": accessToken,
       },
       body: JSON.stringify({ query }),
-    }).then((result) => {
-      console.log("Set Order Id: " + orderid + " tag to " + currency)
-      console.log(JSON.stringify(result))
     })
+      .then((result) => {
+        console.log("Set Order Id: " + orderid + " => tags to " + currency)
+        console.log(JSON.stringify(result))
+      })
+      .catch((err) => {
+        console.log("error", err)
+      })
 
     ctx.body = ctx.request.body
   })
