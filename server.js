@@ -97,7 +97,7 @@ app.prepare().then(() => {
     var orderid = ctx.request.body.admin_graphql_api_id
     var currency = ctx.request.body.presentment_currency
 
-    const { accessToken } = ctx.session
+    const accessToken = "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"
 
     switch (currency) {
       case "USD":
