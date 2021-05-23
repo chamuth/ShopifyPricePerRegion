@@ -111,28 +111,28 @@ app.prepare().then(() => {
         break
     }
 
+    const query = `mutation {
+      orderUpdate(input: {
+        id : "${orderid}",
+        tags: "${currency}"
+      }) {
+        order {
+          id
+        }
+        userErrors {
+          field
+          message
+        }
+      }
+    }`
+
     fetch("https://tanorganic21.myshopify.com/admin/api/2021-04/graphql.json", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "X-Shopify-Access-Token": accessToken,
       },
-      body: JSON.stringify({
-        query: `mutation {
-        orderUpdate(input: {
-          id : "${orderid}",
-          tags: ["${currency}"]
-        }) {
-          order {
-            id
-          }
-          userErrors {
-            field
-            message
-          }
-        }
-       }`,
-      }),
+      body: JSON.stringify({ query }),
     }).then((result) => {
       console.log("Set Order Id: " + orderid + " tag to " + currency)
       console.log(JSON.stringify(result))
