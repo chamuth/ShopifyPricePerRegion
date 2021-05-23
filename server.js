@@ -118,7 +118,7 @@ app.prepare().then(() => {
         "X-Shopify-Access-Token": accessToken,
       },
       body: JSON.stringify({
-        mutation: `{
+        query: `mutation {
         orderUpdate(input: {
           id : "${orderid}",
           tags: ["${currency}"]
