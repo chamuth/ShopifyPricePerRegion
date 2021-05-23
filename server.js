@@ -93,7 +93,6 @@ app.prepare().then(() => {
   })
 
   router.post("/webhooks/order/create", async (ctx) => {
-    console.log(JSON.stringify(ctx.request.body))
     var orderid = ctx.request.body.admin_graphql_api_id
     var currency = ctx.request.body.presentment_currency
 
@@ -113,7 +112,7 @@ app.prepare().then(() => {
 
     const query = `mutation {
       orderUpdate(input: {
-        id : "${orderid}",
+        id: "${orderid}",
         tags: "${currency}"
       }) {
         order {
@@ -125,6 +124,8 @@ app.prepare().then(() => {
         }
       }
     }`
+
+    console.log(query)
 
     fetch("https://tanorganic21.myshopify.com/admin/api/2021-04/graphql.json", {
       method: "POST",
