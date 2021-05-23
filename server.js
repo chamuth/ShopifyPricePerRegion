@@ -14,6 +14,7 @@ const {
   receiveWebhook,
   registerWebhook,
 } = require("@shopify/koa-shopify-webhooks")
+const fetch = require("node-fetch")
 
 const { Pool } = require("pg")
 
@@ -92,6 +93,7 @@ app.prepare().then(() => {
   })
 
   router.post("/webhooks/order/create", async (ctx) => {
+    console.log(JSON.stringify(ctx.request.body))
     ctx.body = ctx.request.body
   })
 
