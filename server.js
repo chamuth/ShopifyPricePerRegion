@@ -126,6 +126,7 @@ app.prepare().then(() => {
     }`
 
     console.log(query)
+    console.log(accessToken)
 
     fetch("https://tanorganic21.myshopify.com/admin/api/2021-04/graphql.json", {
       method: "POST",
