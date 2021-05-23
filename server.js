@@ -121,7 +121,7 @@ app.prepare().then(() => {
         mutation: `{
         orderUpdate(input: {
           id : "${orderid}",
-          tags: "${currency}"
+          tags: ["${currency}"]
         }) {
           order {
             id
