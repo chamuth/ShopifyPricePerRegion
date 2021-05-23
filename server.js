@@ -94,6 +94,54 @@ app.prepare().then(() => {
 
   router.post("/webhooks/order/create", async (ctx) => {
     console.log(JSON.stringify(ctx.request.body))
+    var orderid = ctx.request.body.admin_graphql_api_id
+    var currency = ctx.request.body.presentment_currency
+
+    const { accessToken } = ctx.session
+
+    switch (currency) {
+      case "USD":
+        currency = "US"
+        break
+      case "EUR":
+        currency = "EU"
+        break
+      case "GBP":
+        currency = "GB"
+        break
+    }
+
+    fetch("https://tanorganic21.myshopify.com/admin/api/graphql.json", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Access-Token": accessToken,
+      },
+      body: JSON.stringify({
+        mutation: `{
+        orderUpdate(input: {
+          id : "${orderid}",
+          tags: "${currency}"
+        }) {
+          order {
+            id
+          }
+          userErrors {
+            field
+            message
+          }
+        }
+       }`,
+      }),
+    })
+      .then((result) => {
+        console.log("Set Order Id: " + orderid + " tag to " + currency)
+      })
+      .then((data) => {
+        console.log("data returned:\n", data)
+        res.send(data)
+      })
+
     ctx.body = ctx.request.body
   })
 
