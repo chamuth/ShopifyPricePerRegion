@@ -111,7 +111,7 @@ app.prepare().then(() => {
         break
     }
 
-    fetch("https://tanorganic21.myshopify.com/admin/api/graphql.json", {
+    fetch("https://tanorganic21.myshopify.com/admin/api/2021-04/graphql.json", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
