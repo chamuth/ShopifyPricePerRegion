@@ -54,13 +54,14 @@ app.prepare().then(() => {
         "read_orders",
         "write_orders",
       ],
-      afterAuth(ctx) {
+      async afterAuth(ctx) {
         const { shop, accessToken } = ctx.session
         if (shop && accessToken) {
           ctx.cookies.set("shopOrigin", shop, {
             httpOnly: false,
             secure: true,
             sameSite: "none",
+            expires: 1000 * 60 * 60 * 24 * 30 + Date.now(),
           })
         } else {
           ctx.redirect("/")
