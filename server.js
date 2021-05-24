@@ -61,7 +61,6 @@ app.prepare().then(() => {
             httpOnly: false,
             secure: true,
             sameSite: "none",
-            expires: 1000 * 60 * 60 * 24 * 30 + Date.now(),
           })
         } else {
           ctx.redirect("/")
