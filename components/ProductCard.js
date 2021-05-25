@@ -120,10 +120,12 @@ const ProductCard = (props) => {
       prices["GBP_compareAtPrice"].current.value / props.rates.EURGBP
     )
 
+    const mainSKU = preprocessedVariants["EUR"]["SKU"]
+
     const USDVariant = {
       sku: preprocessedVariants["USD"]
         ? preprocessedVariants["USD"]["SKU"]
-        : preprocessedVariants["EUR"]["SKU"] + "_US",
+        : mainSKU + "-US",
       price: USD_price.toString(),
       compareAtPrice:
         USD_compareAtPrice != null ? USD_compareAtPrice.toString() : null,
@@ -135,7 +137,7 @@ const ProductCard = (props) => {
     }
 
     const EURVariant = {
-      sku: preprocessedVariants["EUR"]["SKU"],
+      sku: mainSKU.endsWith("-EU") ? mainSKU : mainSK + "-EU",
       price: EUR_price.toString(),
       compareAtPrice:
         EUR_compareAtPrice != null ? EUR_compareAtPrice.toString() : null,
@@ -149,7 +151,7 @@ const ProductCard = (props) => {
     const GBPVariant = {
       sku: preprocessedVariants["GBP"]
         ? preprocessedVariants["GBP"]["SKU"]
-        : preprocessedVariants["EUR"]["SKU"] + "_GB",
+        : mainSKU + "-GB",
       price: GBP_price.toString(),
       compareAtPrice:
         GBP_compareAtPrice != null ? GBP_compareAtPrice.toString() : null,
