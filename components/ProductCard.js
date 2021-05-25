@@ -137,7 +137,7 @@ const ProductCard = (props) => {
     }
 
     const EURVariant = {
-      sku: mainSKU.endsWith("-EU") ? mainSKU : mainSK + "-EU",
+      sku: mainSKU.endsWith("-EU") ? mainSKU : mainSKU + "-EU",
       price: EUR_price.toString(),
       compareAtPrice:
         EUR_compareAtPrice != null ? EUR_compareAtPrice.toString() : null,
