@@ -57,6 +57,9 @@ app.prepare().then(() => {
       async afterAuth(ctx) {
         const { shop, accessToken } = ctx.session
         if (shop && accessToken) {
+          await ctx.app.pool.query(`
+            UPDATE tokens SET value='${accessToken}' WHERE key='access'
+          `)
           ctx.cookies.set("shopOrigin", shop, {
             httpOnly: false,
             secure: true,
@@ -77,12 +80,12 @@ app.prepare().then(() => {
   //   ctx.res.statusCode = 200
   // })
 
-  router.get("/api/rates", async (ctx) => {
+  router.get("/api/rates", async ctx => {
     const { rows } = await ctx.app.pool.query("SELECT * FROM exchange_rates")
     ctx.body = JSON.stringify(rows)
   })
 
-  router.post("/api/rates", (ctx) => {
+  router.post("/api/rates", ctx => {
     var eurusd = ctx.request.query["EURUSD"]
     var eurgbp = ctx.request.query["EURGBP"]
 
@@ -96,11 +99,13 @@ app.prepare().then(() => {
     )
   })
 
-  router.post("/webhooks/order/create", async (ctx) => {
+  router.post("/webhooks/order/create", async ctx => {
     var orderid = ctx.request.body.admin_graphql_api_id
     var currency = ctx.request.body.presentment_currency
 
-    const accessToken = "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"
+    // read access token from database
+    const { rows } = await ctx.app.pool.query("SELECT * FROM tokens")
+    const accessToken = rows[0].value
 
     switch (currency) {
       case "USD":
@@ -140,11 +145,11 @@ app.prepare().then(() => {
       },
       body: JSON.stringify({ query }),
     })
-      .then((result) => {
+      .then(result => {
         console.log("Set Order Id: " + orderid + " => tags to " + currency)
         console.log(JSON.stringify(result))
       })
-      .catch((err) => {
+      .catch(err => {
         console.log("error", err)
       })
 
@@ -153,7 +158,7 @@ app.prepare().then(() => {
 
   server.use(graphQLProxy({ version: ApiVersion.July20 }))
 
-  router.get("(.*)", verifyRequest(), async (ctx) => {
+  router.get("(.*)", verifyRequest(), async ctx => {
     await handle(ctx.req, ctx.res)
     ctx.respond = false
     ctx.res.statusCode = 200
