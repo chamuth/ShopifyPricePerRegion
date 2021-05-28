@@ -101,30 +101,33 @@ app.prepare().then(() => {
 
   router.post("/webhooks/order/create", async ctx => {
     var orderid = ctx.request.body.admin_graphql_api_id
-    var currency = ctx.request.body.presentment_currency
-
-    console.log(JSON.stringify(ctx.request.body))
+    var tag = ctx.request.body.presentment_currency
+    var country = ctx.request.body.billing_address.country
 
     // read access token from database
     const { rows } = await ctx.app.pool.query("SELECT * FROM tokens")
     const accessToken = rows[0].value
 
-    switch (currency) {
+    switch (tag) {
       case "USD":
-        currency = "US"
+        if (country.toLowerCase() === "united states") {
+          tag = "US"
+        } else {
+          tag = "Global"
+        }
         break
       case "EUR":
-        currency = "EU"
+        tag = "Europe and Ireland"
         break
       case "GBP":
-        currency = "GB"
+        tag = "UK"
         break
     }
 
     const query = `mutation {
       orderUpdate(input: {
         id: "${orderid}",
-        tags: "${currency}"
+        tags: "${tag}"
       }) {
         order {
           id
@@ -148,7 +151,7 @@ app.prepare().then(() => {
       body: JSON.stringify({ query }),
     })
       .then(result => {
-        console.log("Set Order Id: " + orderid + " => tags to " + currency)
+        console.log("Set Order Id: " + orderid + " => tags to " + tag)
         console.log(JSON.stringify(result))
       })
       .catch(err => {
