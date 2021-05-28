@@ -103,6 +103,8 @@ app.prepare().then(() => {
     var orderid = ctx.request.body.admin_graphql_api_id
     var currency = ctx.request.body.presentment_currency
 
+    console.log(JSON.stringify(ctx.request.body))
+
     // read access token from database
     const { rows } = await ctx.app.pool.query("SELECT * FROM tokens")
     const accessToken = rows[0].value
