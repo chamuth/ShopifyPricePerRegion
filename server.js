@@ -54,6 +54,7 @@ app.prepare().then(() => {
         "read_orders",
         "write_orders",
       ],
+      accessMode: "offline",
       async afterAuth(ctx) {
         const { shop, accessToken } = ctx.session
         if (shop && accessToken) {
