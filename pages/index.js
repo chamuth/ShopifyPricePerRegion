@@ -25,7 +25,7 @@ const GET_PRODUCTS = gql`
           }
           onlineStoreUrl
           options { id, name, values}
-          metafields(first: 5) {
+          metafields(first: 10) {
             edges {
               node {
                 id

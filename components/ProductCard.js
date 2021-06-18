@@ -230,12 +230,15 @@ const ProductCard = (props) => {
   const processMetafields = () => {
     var returner = {
       USD: {
+        id: null,
         value: "true",
       },
       EUR: {
+        id: null,
         value: "true",
       },
       GBP: {
+        id: null,
         value: "true",
       },
     }
