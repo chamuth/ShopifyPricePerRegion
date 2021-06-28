@@ -205,7 +205,7 @@ const ProductCard = props => {
       id: preprocessedMetafields["USD_PRICE"].id,
       namespace: "ppr",
       key: "USD_PRICE",
-      value: prices["USD_price"].current.value.toString(),
+      value: (prices["USD_price"].current.value * 100).toString(),
       valueType: "STRING",
     })
 
@@ -213,7 +213,7 @@ const ProductCard = props => {
       id: preprocessedMetafields["USD_COMPARE_AT_PRICE"].id,
       namespace: "ppr",
       key: "USD_COMPARE_AT_PRICE",
-      value: prices["USD_compareAtPrice"].current.value.toString(),
+      value: (prices["USD_compareAtPrice"].current.value * 100).toString(),
       valueType: "STRING",
     })
 
@@ -221,7 +221,7 @@ const ProductCard = props => {
       id: preprocessedMetafields["GBP_PRICE"].id,
       namespace: "ppr",
       key: "GBP_PRICE",
-      value: prices["GBP_price"].current.value.toString(),
+      value: (prices["GBP_price"].current.value * 100).toString(),
       valueType: "STRING",
     })
 
@@ -229,7 +229,7 @@ const ProductCard = props => {
       id: preprocessedMetafields["GBP_COMPARE_AT_PRICE"].id,
       namespace: "ppr",
       key: "GBP_COMPARE_AT_PRICE",
-      value: prices["GBP_compareAtPrice"].current.value.toString(),
+      value: (prices["GBP_compareAtPrice"].current.value * 100).toString(),
       valueType: "STRING",
     })
 
