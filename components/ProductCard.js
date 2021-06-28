@@ -2,7 +2,7 @@ import { useState, useRef } from "react"
 import gql from "graphql-tag"
 import { useMutation } from "@apollo/react-hooks"
 
-const ProductCard = (props) => {
+const ProductCard = props => {
   const UPDATE_PRODUCT = gql`
     mutation productUpdate($input: ProductInput!) {
       productUpdate(input: $input) {
@@ -29,7 +29,7 @@ const ProductCard = (props) => {
   const [updateProduct, { loading, error }] = useMutation(UPDATE_PRODUCT)
   const [updating, setUpdating] = useState(false)
 
-  const getCurrencyForVariant = (node) => {
+  const getCurrencyForVariant = node => {
     for (var i = 0; i < node.selectedOptions.length; i++) {
       if (node.selectedOptions[i].name === "pprCurrency") {
         return node.selectedOptions[i].value
@@ -38,7 +38,7 @@ const ProductCard = (props) => {
     return null
   }
 
-  const limitLength = (str) => {
+  const limitLength = str => {
     if (str.length > 50) return str.substr(0, 50) + "..."
     else return str
   }
@@ -63,7 +63,7 @@ const ProductCard = (props) => {
     //   returner[edge.node.sku]["data"] = edge.node
     // })
 
-    props.variants.edges.map((edge) => {
+    props.variants.edges.map(edge => {
       returner[
         getCurrencyForVariant(edge.node)
           ? getCurrencyForVariant(edge.node)
@@ -81,16 +81,16 @@ const ProductCard = (props) => {
     return returner
   }
 
-  const processVariantOptions = (options) => {
+  const processVariantOptions = options => {
     var ret = []
-    options.forEach((option) => {
+    options.forEach(option => {
       if (!["USD", "GBP", "EUR"].includes(option["value"]))
         ret.push(option["value"])
     })
     return ret
   }
 
-  const saveProduct = (e) => {
+  const saveProduct = e => {
     // process input prices
     var variants = []
 
@@ -137,7 +137,7 @@ const ProductCard = (props) => {
     }
 
     const EURVariant = {
-      sku:  mainSKU,
+      sku: mainSKU,
       price: EUR_price.toString(),
       compareAtPrice:
         EUR_compareAtPrice != null ? EUR_compareAtPrice.toString() : null,
@@ -169,11 +169,11 @@ const ProductCard = (props) => {
       variants.push(GBPVariant)
 
     var optionsWithoutPPR = props.node.options.filter(
-      (x) => x["name"] != "pprCurrency"
+      x => x["name"] != "pprCurrency"
     )
     var originalProductOptions = ["pprCurrency"]
     originalProductOptions = originalProductOptions.concat(
-      optionsWithoutPPR.map((option) => option["name"])
+      optionsWithoutPPR.map(option => option["name"])
     )
 
     var metafields = [
@@ -200,6 +200,39 @@ const ProductCard = (props) => {
       },
     ]
 
+    // extra metafields
+    metafields.push({
+      id: preprocessedMetafields["USD_PRICE"].id,
+      namespace: "ppr",
+      key: "USD_PRICE",
+      value: prices["USD_price"].current.value.toString(),
+      valueType: "STRING",
+    })
+
+    metafields.push({
+      id: preprocessedMetafields["USD_COMPARE_AT_PRICE"].id,
+      namespace: "ppr",
+      key: "USD_COMPARE_AT_PRICE",
+      value: prices["USD_compareAtPrice"].current.value.toString(),
+      valueType: "STRING",
+    })
+
+    metafields.push({
+      id: preprocessedMetafields["GBP_PRICE"].id,
+      namespace: "ppr",
+      key: "GBP_PRICE",
+      value: prices["GBP_price"].current.value.toString(),
+      valueType: "STRING",
+    })
+
+    metafields.push({
+      id: preprocessedMetafields["GBP_COMPARE_AT_PRICE"].id,
+      namespace: "ppr",
+      key: "GBP_COMPARE_AT_PRICE",
+      value: prices["GBP_compareAtPrice"].current.value.toString(),
+      valueType: "STRING",
+    })
+
     // Set variants for given product id
     var input = {
       id: props.id,
@@ -208,7 +241,7 @@ const ProductCard = (props) => {
       metafields: metafields,
     }
     console.log(JSON.stringify(input))
-    updateProduct({ variables: { input: input } }).then((er) => {
+    updateProduct({ variables: { input: input } }).then(er => {
       console.log(JSON.stringify(er))
       props.refetch()
     })
@@ -218,7 +251,7 @@ const ProductCard = (props) => {
     e.preventDefault()
   }
 
-  const formatPrice = (num) => {
+  const formatPrice = num => {
     if (num !== "" && num !== null) {
       var x = parseFloat(num)
       return (Math.round(x * 100) / 100).toFixed(2)
@@ -241,9 +274,22 @@ const ProductCard = (props) => {
         id: null,
         value: "true",
       },
+
+      USD_PRICE: {
+        id: null,
+      },
+      GBP_PRICE: {
+        id: null,
+      },
+      USD_COMPARE_AT_PRICE: {
+        id: null,
+      },
+      GBP_COMPARE_AT_PRICE: {
+        id: null,
+      },
     }
 
-    props.metafields.edges.map((edge) => {
+    props.metafields.edges.map(edge => {
       if (edge.node.namespace === "ppr") {
         if (edge.node.key === "availability_USD") {
           returner["USD"].id = edge.node.id
@@ -258,6 +304,22 @@ const ProductCard = (props) => {
         if (edge.node.key === "availability_GBP") {
           returner["GBP"].id = edge.node.id
           returner["GBP"].value = edge.node.value
+        }
+
+        if (edge.node.key === "USD_PRICE") {
+          returner["USD_PRICE"].id = edge.node.id
+        }
+
+        if (edge.node.key === "GBP_PRICE") {
+          returner["GBP_PRICE"].id = edge.node.id
+        }
+
+        if (edge.node.key === "USD_COMPARE_AT_PRICE") {
+          returner["USD_COMPARE_AT_PRICE"].id = edge.node.id
+        }
+
+        if (edge.node.key === "GBP_COMPARE_AT_PRICE") {
+          returner["GBP_COMPARE_AT_PRICE"].id = edge.node.id
         }
       }
     })
